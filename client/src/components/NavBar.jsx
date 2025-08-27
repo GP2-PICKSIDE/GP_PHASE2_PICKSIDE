@@ -6,7 +6,7 @@ const NavBar = ({ isConnecting, isConnected }) => {
 
   return (
     <nav className="flex justify-between px-8 md:px-16 py-6 items-center">
-      <Link to="/" className="font-semibold text-xl">
+      <Link to="/play" className="font-semibold text-xl">
         PICKSIDE
       </Link>
 

@@ -11,7 +11,7 @@ const HomePage = () => {
         <p className="text-gray-500">Create or join room to start</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
         {/* Create Room */}
         <CreateRoomcard />
 

@@ -23,7 +23,7 @@ const Lobby = ({ code, roomName }) => {
           </svg>
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
         <PlayersCard />
 
         <HostSettingCard />
