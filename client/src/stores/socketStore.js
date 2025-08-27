@@ -24,7 +24,6 @@ const useSocketStore = create(
           players: room.players,
           settings: room.settings,
           roundIndex: room.roundIndex,
-          totalRounds: room.totalRounds,
           deadline: room.deadline,
           question: room.question,
           isHost: room.hostId
@@ -33,16 +32,18 @@ const useSocketStore = create(
           me: { ...state.me, id: socketInitializer.id },
         }));
       }),
-        socketInitializer.on("room:error", (err) => {
+      
+      socketInitializer.on("room:error", (err) => {
           useGameStore.setState((state) => ({
             ...state,
             error: err?.message || "ROOM_ERROR",
           }));
 
-        }),
-        set((state) => {
-          state.socketState = socketInitializer;
-        });
+      }),
+
+      set((state) => {
+        state.socketState = socketInitializer;
+      });
     },
 
     internalSocketDisconnect: () => {

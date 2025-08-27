@@ -1,17 +1,29 @@
 import useAllStore from "../../../stores";
 import useGameStore from "../../../stores/gameStore";
+import { useMutation } from "@tanstack/react-query";
 
 const HostSettingCard = () => {
-  const { isHost, settings } = useGameStore();
+  const { isHost, settings, FnStartRoom } = useGameStore();
   const { setRoomTheme, setRoomLang, setTotalRounds } = useAllStore();
 
   const themes = ["funny", "life", "food", "friends", "travel"];
+
+  const { mutate } = useMutation({
+    mutationKey: ["startRoom"],
+    mutationFn: FnStartRoom,
+  });
 
   return (
     <div className="w-full bg-white shadow-xl px-8 md:px-16 py-12 flex flex-col gap-8 rounded-xl">
       <p className="font-semibold text-2xl">Room Settings</p>
 
-      <form className="flex flex-col gap-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          mutate();
+        }}
+        className="flex flex-col gap-4"
+      >
         <div className="flex justify-between gap-4 w-full items-center">
           <label className="w-full" htmlFor="theme">
             Theme
