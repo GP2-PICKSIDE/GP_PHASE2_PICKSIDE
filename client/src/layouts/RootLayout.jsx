@@ -12,7 +12,6 @@ const RootLayout = () => {
     mutate,
     isPending: isConnecting,
     isSuccess: isConnected,
-    isError,
   } = useMutation({
     mutationKey: ["connect"],
     mutationFn: internalSocketConnect,
@@ -26,11 +25,7 @@ const RootLayout = () => {
 
   return (
     <>
-      <NavBar
-        isConnecting={isConnecting}
-        isConnected={isConnected}
-        isError={isError}
-      />
+      <NavBar isConnecting={isConnecting} isConnected={isConnected} />
       <Outlet />
     </>
   );
