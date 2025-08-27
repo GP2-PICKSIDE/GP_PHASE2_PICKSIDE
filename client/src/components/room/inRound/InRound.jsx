@@ -35,7 +35,9 @@ const InRound = () => {
     const onKey = (e) => {
       const key = e.key.toLowerCase();
       if (key === "a" || key === "b") {
-        const btn = document.querySelector(`[data-choose="${key.toUpperCase()}"]`);
+        const btn = document.querySelector(
+          `[data-choose="${key.toUpperCase()}"]`
+        );
         if (btn) btn.click();
       }
     };
@@ -93,7 +95,8 @@ const InRound = () => {
               className={[
                 "relative flex items-center justify-center rounded-full shrink-0",
                 "h-10 w-10 md:h-12 md:w-12 text-white",
-                "bg-gradient-to-br", rings[idx % rings.length],
+                "bg-gradient-to-br",
+                rings[idx % rings.length],
                 voted ? "ring-4 ring-emerald-400" : "ring-2 ring-white/50",
               ].join(" ")}
               title={player.name || ""}
@@ -102,7 +105,22 @@ const InRound = () => {
                 {initials(player.name || "")}
               </span>
               {voted && (
-                <span className="absolute -right-1 -bottom-1 h-4 w-4 rounded-full bg-emerald-500 ring-2 ring-white" />
+                <span className="absolute -right-1 -bottom-1 h-5 w-5 rounded-full bg-emerald-500 ring-2 ring-white flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3 w-3 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
               )}
             </div>
           );
