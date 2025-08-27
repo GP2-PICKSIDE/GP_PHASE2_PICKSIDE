@@ -7,6 +7,7 @@ import "./index.css";
 import HomePage from "./views/HomePage";
 import RootLayout from "./layouts/RootLayout";
 import RoomPage from "./views/RoomPage";
+import QuizRoomPage from "./views/QuizRoomPage";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")).render(
           <Route element={<RootLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/room" element={<RoomPage />} />
+            <Route path="/quiz-room" element={<QuizRoomPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
