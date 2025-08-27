@@ -19,6 +19,7 @@ const useSocketStore = create(
         useGameStore.setState((state) => ({
           code: room.code,
           gameState: room.gameState,
+          roomName: room.roomName,
           players: room.players,
           settings: room.settings,
           roundIndex: room.roundIndex,
@@ -30,8 +31,6 @@ const useSocketStore = create(
             : state.isHost,
           me: { ...state.me, id: socketInitializer.id },
         }));
-
-        console.log(`Room with code ${useGameStore.getState().code} created`);
       }),
         set((state) => {
           state.socketState = socketInitializer;
