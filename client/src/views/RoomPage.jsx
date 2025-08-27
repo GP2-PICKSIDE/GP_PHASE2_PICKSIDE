@@ -7,8 +7,6 @@ import useGameStore from "../stores/gameStore";
 const RoomPage = () => {
   const { roomName, code, gameState } = useGameStore();
 
-  console.log(gameState);
-
   return (
     <div className="px-8 md:px-16 py-6 flex flex-col gap-12 justify-center items-center min-h-screen">
       {gameState === "idle" && <p>Room not found</p>} {/* No room */}

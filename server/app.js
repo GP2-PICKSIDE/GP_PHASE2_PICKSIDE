@@ -5,10 +5,10 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const router = require("./routers");
 const cors = require("cors");
 const generateRoomCode = require("./helpers/generateRoomCode");
-const generateAi = require("../server/controllers/ControllerAi");
+const { generateQuestion } = require("./services/generateQuestion");
+const { createTimerHelpers } = require("./helpers/scheduleTimer");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +24,18 @@ const io = new Server(httpServer, {
 
 // room container
 const rooms = new Map();
+const { scheduleDeadline, emitRoomState, endRound } = createTimerHelpers({
+  io,
+  rooms,
+});
+
+function normalizeChoice(x) {
+  const c = String(x ?? "")
+    .trim()
+    .toUpperCase();
+  if (c === "A" || c === "B") return c;
+  return null;
+}
 
 io.on("connection", (socket) => {
   console.log(`User ${socket.id} is connected`);
@@ -63,10 +75,9 @@ io.on("connection", (socket) => {
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
+      history: room.history,
     });
-    console.log(
-      `Room name "${name}" with code "${code}" created by "${hostId}"`
-    );
+    console.log(`Room with code "${code}" created by "${name}"`);
   });
 
   socket.on("room:join", ({ code, name }) => {
@@ -86,6 +97,7 @@ io.on("connection", (socket) => {
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
+      history: room.history,
     });
 
     console.log(`${name} joined room with code ${code}`);
@@ -115,28 +127,93 @@ io.on("connection", (socket) => {
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
+      history: room.history,
     });
   });
 
-  socket.on("room:start", ({ code, totalRounds, theme, lang }) => {
+  socket.on("room:start", async ({ code, settings }) => {
     code = (code || "").toUpperCase();
     const room = rooms.get(code);
     if (!room) return socket.emit("room:error", { message: "Room not found" });
 
+    room.settings = { ...room.settings, ...settings };
+    const items = await generateQuestion({
+      rounds: room.settings.rounds,
+      theme: room.settings.theme || "funny",
+      lang: room.settings.lang || "id",
+    });
+
+    room.questions = items.map((x) => ({ ...x, votes: {} }));
+    room.roundIndex = 0;
+    room.gameState = "in_round";
+    room.question = room.questions[0];
+    room.deadline = Date.now() + 15_000;
+
     io.to(code).emit("room:state", {
       code,
-      gameState: "in_round",
+      gameState: room.gameState,
       roomName: room.roomName,
-      settings: { theme, lang, rounds: totalRounds },
+      settings: room.settings,
+      deadline: room.deadline,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
+      question: room.question,
       hostId: room.hostId,
+      history: room.history,
     });
+
+    scheduleDeadline(code);
   });
 
-  socket.on("generate_question", async ({ roomCode, theme, lang }) => {
-    const questionData = await generateAi(theme, lang);
-    io.to(roomCode).emit("new_question", questionData);
+  socket.on("round:vote", ({ code, choice }) => {
+    code = (code || "").toUpperCase();
+    const room = rooms.get(code);
+    if (!room || room.gameState !== "in_round") return;
+
+    const pid = socket.id;
+    const current = room.questions[room.roundIndex];
+    if (!current.votes) current.votes = {};
+    const norm = normalizeChoice(choice);
+    if (!norm) return;
+    current.votes[pid] = norm;
+
+    // Broadcast progress (biar client tahu siapa sudah vote + update border avatar)
+    room.question = current;
+    emitRoomState(code);
+
+    // Jika semua sudah vote -> langsung reveal (tanpa nunggu deadline)
+    const totalPlayers = Object.keys(room.players).length;
+    const totalVotes = Object.keys(current.votes).length;
+    if (totalVotes >= totalPlayers) endRound(code);
+
+    console.log("vote from", socket.id, "choice:", choice);
+  });
+
+  socket.on("room:restart", ({ code }) => {
+    const room = rooms.get(code);
+    if (!room) return;
+
+    if (room._deadlineTimer) clearTimeout(room._deadlineTimer);
+
+    room.gameState = "lobby";
+    room.roundIndex = 0;
+    room.deadline = 0;
+    room.question = null;
+    room.reveal = null;
+    room.history = [];
+
+    io.to(code).emit("room:state", {
+      code,
+      gameState: room.gameState,
+      roomName: room.roomName,
+      settings: room.settings,
+      players: Object.values(room.players),
+      roundIndex: room.roundIndex,
+      deadline: room.deadline,
+      question: room.question,
+      hostId: room.hostId,
+      history: room.history,
+    });
   });
 
   socket.on("disconnect", () => {
@@ -170,12 +247,10 @@ io.on("connection", (socket) => {
       roundIndex: room.roundIndex,
       totalRounds: room.settings.rounds,
       hostId: room.hostId,
+      history: room.history,
     });
   });
 });
-
-// router
-app.use(router);
 
 httpServer.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
