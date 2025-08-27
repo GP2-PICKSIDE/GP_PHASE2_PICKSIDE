@@ -24,7 +24,10 @@ const useSocketStore = create(
           roundIndex: room.roundIndex,
           deadline: room.deadline,
           question: room.question,
-          isHost: room.hostId ? room.hostId === socketInitializer.id : state.isHost,
+          isHost: room.hostId
+            ? room.hostId === socketInitializer.id
+            : state.isHost,
+          me: socketInitializer.id,
         }));
 
         console.log(`Room with code ${useGameStore.getState().code} created`);

@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
 
     io.to(code).emit("room:state", {
       code,
-      state: room.state,
+      gameState: room.gameState,
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
