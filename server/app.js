@@ -136,7 +136,23 @@ io.on("connection", (socket) => {
 
   socket.on("generate_question", async ({ roomCode, theme, lang }) => {
     const questionData = await generateAi(theme, lang);
-    io.to(roomCode).emit("new_question", questionData);
+
+    // set deadline 10 detik
+    const deadline = Date.now() + 10_000;
+
+    const room = rooms.get(roomCode);
+    if (room) {
+      room.deadline = deadline;
+    }
+
+    io.to(roomCode).emit("new_question", {
+      ...questionData,
+      deadline,
+    });
+
+    setTimeout(() => {
+      io.to(roomCode).emit("time_up");
+    }, 10_000);
   });
 
   socket.on("disconnect", () => {
