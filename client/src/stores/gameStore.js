@@ -12,7 +12,7 @@ const useGameStore = create(
     isHost: false,
     settings: { theme: "funny", lang: "id", rounds: 5 },
 
-    gameState: "idle",
+    gameState: "in_round",
     players: [],
     roundIndex: 0,
     deadline: null,
