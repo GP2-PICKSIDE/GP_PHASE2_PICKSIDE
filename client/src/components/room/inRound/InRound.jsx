@@ -6,6 +6,7 @@ import { useState } from "react";
 
 const InRound = () => {
   const { players = [], question, roundIndex, deadline, me } = useGameStore();
+  const list = players.filter((p) => p?.connected);
   const title = question?.question || "Loading...";
   const options = question?.options || [];
 
@@ -40,7 +41,7 @@ const InRound = () => {
 
       {/* PlayerAvatar -> initials, border hijau -> sudah vote */}
       <div className="flex gap-4 flex-wrap">
-        {players.map((player) => {
+        {list.map((player) => {
           const voted = !!question?.votes?.[player.id];
           return (
             <div

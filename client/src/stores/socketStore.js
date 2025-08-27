@@ -13,7 +13,10 @@ const useSocketStore = create(
       const socketInitializer = io(BASE_URL);
 
       socketInitializer.on("connect", () => {
-        // console.log(socketInitializer.id);
+        const { code, me } = useGameStore.getState();
+        if (code && me?.name) {
+          socketInitializer.emit("room:join", { code, name: me.name });
+        }
       });
 
       socketInitializer.on("room:state", (room) => {

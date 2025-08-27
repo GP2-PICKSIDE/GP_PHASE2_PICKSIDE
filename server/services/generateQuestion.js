@@ -11,12 +11,17 @@ const generateQuestion = async ({
     const n = Math.max(1, Math.min(10, Number(rounds) || 1));
 
     const prompt = `
-      Buat ${n} pertanyaan "Would You Rather" dengan tema "${theme}" dalam bahasa "${lang}".
-      Syarat:
-      - Tiap pertanyaan unik, kreatif, dan lucu/menarik (hindari pengulangan kata/tema).
-      - Pertanyaan max 12 kata.
-      - Hanya 2 opsi (A dan B), masing-masing max 5 kata.
-      - Jangan tulis apapun selain JSON valid dengan format ini:
+      Buat ${n} pertanyaan "Would You Rather" bertema "${theme}"
+      dalam bahasa "${lang}".
+
+      Kriteria penting:
+      - Setiap pertanyaan harus relevan dengan tema "${theme}".
+      - Pertanyaan maksimal 12 kata, jelas, natural, dan mudah dipahami.
+      - Tiap pertanyaan hanya punya 2 opsi (A dan B).
+      - Opsi maksimal 5 kata, singkat, relevan, dan seimbang (sama-sama menarik/dilema).
+      - Hindari pengulangan kata/tema, hindari opsi yang terlalu absurd/aneh.
+      - Gaya bahasa harus konsisten dengan "${lang}".
+      - Format output wajib JSON valid berikut:
 
       {
         "items": [
@@ -25,15 +30,14 @@ const generateQuestion = async ({
       }
 
       Jumlah "items" harus tepat = ${n}.
+      Jangan tulis apapun selain JSON valid tersebut.
     `;
 
-    // ⬇️ TIDAK pakai destructuring { response }
     const resp = await genAI.models.generateContent({
       model,
       contents: prompt,
     });
 
-    // ⬇️ text adalah property, bukan function
     let t = String(resp.text || "")
       .replace(/```json|```/gi, "")
       .trim();
