@@ -12,13 +12,16 @@ const generateQuestion = async ({
     const n = Math.max(1, Math.min(10, Number(rounds) || 1));
 
     const prompt = `
-    Buat ${n} pertanyaan "Would You Rather" dengan tema "${theme}" dalam bahasa "${lang}".
-    Syarat:
-    - Tiap pertanyaan unik, kreatif, dan lucu/menarik (hindari pengulangan kata/tema).
-    - Pertanyaan max 12 kata.
-    - Hanya 2 opsi (A dan B), masing-masing max 5 kata.
-    - Jangan tulis apapun selain JSON valid dengan format ini:
+    Tugas: Hasilkan ${n} pertanyaan "Would You Rather" (WYR) bertema "${theme}" dalam bahasa "${lang}" yang terasa dekat dengan kehidupan sehari-hari pengguna di Indonesia (transportasi, kampus/kerja, kos, cuaca, nongkrong, gacha diskon, sinyal/Wi-Fi, mager, dll). Humor ringan, sopan, tidak menyinggung SARA/18+.
 
+    Batasan kreativitas & gaya:
+    - Tiap pertanyaan unik, kreatif, lucu/menarik.
+    - Pertanyaan ≤ 12 kata.
+    - Tepat 2 opsi: "A" dan "B". Masing-masing opsi ≤ 5 kata.
+    - Hindari pengulangan kata kunci antar pertanyaan (variasi tema/situasi).
+    - Tanpa emoji, tanpa penomoran, tanpa komentar.
+
+    Output: HANYA JSON valid:
     {
       "items": [
         { "question": "…", "options": ["…","…"] }

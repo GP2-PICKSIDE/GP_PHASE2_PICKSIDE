@@ -13,7 +13,7 @@ const useSocketStore = create(
       const socketInitializer = io(BASE_URL);
 
       socketInitializer.on("connect", () => {
-        console.log(socketInitializer.id);
+        // console.log(socketInitializer.id);
       });
 
       socketInitializer.on("room:state", (room) => {
