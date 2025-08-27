@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-const NavBar = ({ isConnecting, isConnected }) => {
+const NavBar = ({ isConnecting, isConnected, isError }) => {
   return (
     <nav className="flex justify-between px-8 md:px-16 py-6 items-center">
       <Link to="/" className="font-semibold text-xl">
@@ -14,6 +14,8 @@ const NavBar = ({ isConnecting, isConnected }) => {
               ? "bg-gray-300"
               : isConnected
               ? "bg-success"
+              : isError
+              ? "bg-error"
               : "bg-error"
           } rounded-full`}
         ></span>
@@ -22,6 +24,8 @@ const NavBar = ({ isConnecting, isConnected }) => {
             ? "Connecting..."
             : isConnected
             ? "Connected"
+            : isError
+            ? "Disconnected"
             : "Disconnected"}
         </p>
       </div>

@@ -1,9 +1,10 @@
 import HostSettingCard from "../components/room/lobby/HostSettingCard";
+import Lobby from "../components/room/lobby/Lobby";
 import PlayersCard from "../components/room/lobby/PlayersCard";
 import useGameStore from "../stores/gameStore";
 
 const RoomPage = () => {
-  const { roomName, code } = useGameStore();
+  const { roomName, code, gameState } = useGameStore();
 
   return (
     <div className="px-8 md:px-16 py-6 flex flex-col gap-12 justify-center items-center min-h-screen">
@@ -27,11 +28,8 @@ const RoomPage = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <PlayersCard />
-
-        <HostSettingCard />
-      </div>
+      {/* room = lobby */}
+      {gameState === "lobby" && <Lobby />}
     </div>
   );
 };
