@@ -1,4 +1,4 @@
-import { initials } from "../../utils/initialsName";
+import { initials } from "../../../utils/initialsName";
 
 const PlayersCard = () => {
   return (
@@ -10,10 +10,10 @@ const PlayersCard = () => {
           <div className="font-medium flex gap-4 items-center">
             <div>
               <span className="w-4 h-6 bg-secondary rounded-full text-white p-2">
-                {initials("Rafael Axel")}
+                {initials("tes halo")}
               </span>
             </div>
-            <span>Rafael Axel</span>
+            <span>tes halo</span>
           </div>
           <span className="md:block hidden text-gray-400">Connected</span>
         </div>

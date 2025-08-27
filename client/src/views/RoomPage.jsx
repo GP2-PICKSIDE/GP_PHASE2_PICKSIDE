@@ -1,14 +1,18 @@
-import HostSettingCard from "../components/room/HostSettingCard";
-import PlayersCard from "../components/room/PlayersCard";
+import HostSettingCard from "../components/room/lobby/HostSettingCard";
+import PlayersCard from "../components/room/lobby/PlayersCard";
+import useGameStore from "../stores/gameStore";
 
 const RoomPage = () => {
+  const { roomName, code } = useGameStore();
+
   return (
     <div className="px-8 md:px-16 py-6 flex flex-col gap-12 justify-center items-center min-h-screen">
       <div className="text-center flex gap-4 items-center">
-        <h1 className="text-3xl md:text-4xl font-semibold">Room Name</h1>
+        <h1 className="text-3xl md:text-4xl font-semibold">Room {roomName}</h1>
         <button
           type="button"
           title="Copy room code"
+          onClick={() => navigator.clipboard.writeText(code)}
           className="text-gray-500 border border-gray-400 p-2 rounded-lg flex gap-2 items-center cursor-pointer hover:bg-gray-300/50"
         >
           <svg

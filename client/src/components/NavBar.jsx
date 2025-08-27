@@ -1,7 +1,11 @@
+import { Link } from "react-router";
+
 const NavBar = ({ isConnecting, isConnected }) => {
   return (
     <nav className="flex justify-between px-8 md:px-16 py-6 items-center">
-      <div className="font-semibold text-xl">PICKSIDE</div>
+      <Link to="/" className="font-semibold text-xl">
+        PICKSIDE
+      </Link>
 
       <div className="flex gap-2 items-center">
         <span
