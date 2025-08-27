@@ -9,7 +9,7 @@ class GenerateAi {
 
       const prompt = `Buat 1 pertanyaan "Would You Rather" dengan tema ${theme}, 
 tulis dalam bahasa ${lang}. 
-Pertanyaannya maksimal 10 kata, jawabannya cuma 2 pilihan, masing-masing maksimal 5 kata. 
+Pertanyaannya maksimal 10 kata, langsung kasih pertanyaan antara 2 pilihan aja dan jawabannya cuma 2 pilihan, masing-masing maksimal 5 kata. 
 Hanya balas JSON tanpa penjelasan lain:
 {
   "question": "...",

@@ -35,9 +35,9 @@ const InRound = () => {
         <p className="mt-6 text-4xl font-bold">{question}</p>
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32">
-        <AnswerCard choose="A" />
-        <AnswerCard choose="B" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 text-2xl">
+        <AnswerCard choose="A" option={options[0]} />
+        <AnswerCard choose="B" option={options[1]} />
       </div>
 
       {/* PlayerAvatar -> initials */}
