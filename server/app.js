@@ -30,10 +30,10 @@ io.on("connection", (socket) => {
 
   socket.on("room:create", ({ name, roomName }) => {
     if (typeof name !== "string" || name.length < 2 || name.length > 32) {
-      return socket.emit("room:error", { message: "Invalid name" });
+      return socket.emit("room:error", { message: "INVALID_NAME" });
     }
     if (roomName && roomName.length > 40) {
-      return socket.emit("room:error", { message: "Invalid room name" });
+      return socket.emit("room:error", { message: "INVALID_ROOM_NAME" });
     }
 
     const code = generateRoomCode(5);
@@ -62,6 +62,7 @@ io.on("connection", (socket) => {
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
+      totalRounds: room.settings.rounds,
       hostId: room.hostId,
     });
     console.log(
@@ -72,7 +73,7 @@ io.on("connection", (socket) => {
   socket.on("room:join", ({ code, name }) => {
     code = (code || "").toUpperCase();
     const room = rooms.get(code);
-    if (!room) return socket.emit("room:error", { message: "Room not found" });
+    if (!room) return socket.emit("room:error", { message: "ROOM_NOT_FOUND" });
 
     room.players[socket.id] = { id: socket.id, name, connected: true };
     socket.data.roomCode = code;
@@ -85,74 +86,16 @@ io.on("connection", (socket) => {
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
+      totalRounds: room.settings.rounds,
       hostId: room.hostId,
     });
 
     console.log(`${name} joined room with code ${code}`);
   });
 
-  socket.on("room:settings", ({ code, theme, lang, rounds }) => {
-    code = (code || "").toUpperCase();
-    const room = rooms.get(code);
-    if (!room) return socket.emit("room:error", { message: "Room not found" });
-
-    if (socket.id !== room.hostId) {
-      return socket.emit("room:error", { message: "NOT_HOST" });
-    }
-
-    const next = { ...room.settings };
-    if (typeof theme === "string") next.theme = theme;
-    if (typeof lang === "string") next.lang = lang;
-    if (typeof rounds !== "undefined") next.rounds = Number(rounds);
-
-    room.settings = next;
-
-    io.to(code).emit("room:state", {
-      code,
-      gameState: room.gameState,
-      roomName: room.roomName,
-      settings: room.settings,
-      players: Object.values(room.players),
-      roundIndex: room.roundIndex,
-      hostId: room.hostId,
-    });
-  });
-
-  socket.on("room:start", ({ code, settings }) => {
-    code = (code || "").toUpperCase();
-    const room = rooms.get(code);
-    if (!room) return socket.emit("room:error", { message: "Room not found" });
-
-    io.to(code).emit("room:state", {
-      code,
-      gameState: "in_round",
-      roomName: room.roomName,
-      settings,
-      players: Object.values(room.players),
-      roundIndex: room.roundIndex,
-      hostId: room.hostId,
-    });
-  });
-
   socket.on("generate_question", async ({ roomCode, theme, lang }) => {
     const questionData = await generateAi(theme, lang);
-
-    // set deadline 10 detik
-    const deadline = Date.now() + 10_000;
-
-    const room = rooms.get(roomCode);
-    if (room) {
-      room.deadline = deadline;
-    }
-
-    io.to(roomCode).emit("new_question", {
-      ...questionData,
-      deadline,
-    });
-
-    setTimeout(() => {
-      io.to(roomCode).emit("time_up");
-    }, 10_000);
+    io.to(roomCode).emit("new_question", questionData);
   });
 
   socket.on("disconnect", () => {
@@ -180,10 +123,10 @@ io.on("connection", (socket) => {
     io.to(code).emit("room:state", {
       code,
       gameState: room.gameState,
-      roomName: room.roomName,
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
+      totalRounds: room.settings.rounds,
       hostId: room.hostId,
     });
   });
