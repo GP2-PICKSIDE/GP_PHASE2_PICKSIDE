@@ -7,14 +7,17 @@ import "./index.css";
 import HomePage from "./views/HomePage";
 import RootLayout from "./layouts/RootLayout";
 import RoomPage from "./views/RoomPage";
+import MainPage from "./views/MainLandingPage";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
+
   // <StrictMode>
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <Routes>
+     <Route path="/" element={<MainPage />} />
         <Route element={<RootLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/room" element={<RoomPage />} />
@@ -23,4 +26,5 @@ createRoot(document.getElementById("root")).render(
     </BrowserRouter>
   </QueryClientProvider>
   // </StrictMode>
+
 );
