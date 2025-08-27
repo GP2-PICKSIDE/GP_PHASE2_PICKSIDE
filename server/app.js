@@ -1,4 +1,6 @@
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const express = require("express");
 const { createServer } = require("http");
@@ -6,6 +8,7 @@ const { Server } = require("socket.io");
 const router = require("./routers");
 const cors = require("cors");
 const generateRoomCode = require("./helpers/generateRoomCode");
+const generateAi = require("../server/controllers/ControllerAi");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -63,6 +66,15 @@ io.on("connection", (socket) => {
     console.log(
       `Room name "${name}" with code "${code}" created by "${hostId}"`
     );
+  });
+
+  socket.on("generate_question", async ({ roomCode, theme, lang }) => {
+    const questionData = await generateAi(theme, lang);
+    io.to(roomCode).emit("new_question", questionData);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected:", socket.id);
   });
 });
 
