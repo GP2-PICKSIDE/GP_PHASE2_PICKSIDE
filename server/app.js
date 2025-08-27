@@ -58,6 +58,7 @@ io.on("connection", (socket) => {
     io.to(code).emit("room:state", {
       code,
       gameState: room.gameState,
+      roomName: room.roomName,
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
@@ -81,6 +82,7 @@ io.on("connection", (socket) => {
     io.to(code).emit("room:state", {
       code,
       gameState: room.gameState,
+      roomName: room.roomName,
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
