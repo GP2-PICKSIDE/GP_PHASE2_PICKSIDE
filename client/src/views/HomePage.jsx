@@ -3,21 +3,17 @@ import JoinRoomCard from "../components/home/JoinRoomCard";
 
 const HomePage = () => {
   return (
-    <div
-      className="
-        min-h-screen px-6 md:px-10 py-10
-        bg-white
-        bg-[radial-gradient(1200px_600px_at_50%_-200px,rgba(59,130,246,0.06),transparent)]
-      "
-    >
-      <header className="text-center mb-10">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-          Create or Join Room
+    <div className="min-h-screen px-6 md:px-10 py-12 bg-gradient-to-br from-indigo-50 via-white to-pink-50">
+      <header className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-800">
+          Create or Join a Room
         </h1>
-        <p className="text-gray-500 mt-1">Create a room or enter a code to start</p>
+        <p className="text-gray-500 mt-2 text-lg">
+          Challenge your friends with tough choices!
+        </p>
       </header>
 
-      <main className="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+      <main className="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch">
         <CreateRoomcard />
         <JoinRoomCard />
       </main>

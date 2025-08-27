@@ -1,33 +1,23 @@
 import { Outlet } from "react-router";
 import NavBar from "../components/NavBar";
 import useSocketStore from "../stores/socketStore";
-import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const RootLayout = () => {
   const { internalSocketConnect, internalSocketDisconnect } = useSocketStore();
 
-  // socket connect
-  const {
-    mutate,
-    isPending: isConnecting,
-    isSuccess: isConnected,
-  } = useMutation({
-    mutationKey: ["connect"],
-    mutationFn: internalSocketConnect,
-  });
-
   useEffect(() => {
-    mutate();
-
+    internalSocketConnect();
     return () => internalSocketDisconnect();
-  }, [mutate, internalSocketDisconnect]);
+  }, [internalSocketConnect, internalSocketDisconnect]);
 
   return (
-    <>
-      <NavBar isConnecting={isConnecting} isConnected={isConnected} />
-      <Outlet />
-    </>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-indigo-50 via-white to-pink-50">
+      <NavBar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+    </div>
   );
 };
 

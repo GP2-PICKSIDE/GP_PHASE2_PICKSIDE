@@ -8,27 +8,32 @@ const ResultCard = ({
   count = 0,
   voters = [],
   players = [],
-  isWinner = false, // <— tambahkan prop ini dari Reveal.jsx
+  isWinner = false,
 }) => {
   const nameOf = (id) => players.find((x) => x.id === id)?.name || "?";
   const isA = choose === "A";
-  const headBg = isA ? "bg-primary" : "bg-secondary";
-  const bodyGrad = isA
-    ? "from-primary/75 to-primary/55"
-    : "from-secondary/75 to-secondary/55";
 
-  // animate %
+  // theming
+  const headBg = isA
+    ? "from-indigo-500 to-blue-500"
+    : "from-violet-500 to-fuchsia-500";
+  const bodyGrad = isA
+    ? "from-indigo-400/80 to-indigo-500/60"
+    : "from-violet-400/80 to-fuchsia-500/60";
+
+  // animate percentage
   const target = Math.max(0, Math.min(100, Number(percent) || 0));
   const [shownPct, setShownPct] = useState(0);
   const [barPct, setBarPct] = useState(0);
   useEffect(() => {
     let raf;
     const start = performance.now();
-    const dur = 650;
+    const dur = 700;
     const animate = (t) => {
       const p = Math.min(1, (t - start) / dur);
-      setShownPct(Math.round(target * p));
-      setBarPct(target * p);
+      const eased = p < 0.5 ? 2 * p * p : -1 + (4 - 2 * p) * p; // easeInOutQuad
+      setShownPct(Math.round(target * eased));
+      setBarPct(target * eased);
       if (p < 1) raf = requestAnimationFrame(animate);
     };
     raf = requestAnimationFrame(animate);
@@ -38,18 +43,21 @@ const ResultCard = ({
   return (
     <div
       className={[
-        "w-full bg-white rounded-2xl overflow-hidden h-full flex flex-col transition-transform",
-        "shadow-xl",
+        "relative w-full h-full flex flex-col overflow-hidden rounded-2xl bg-white shadow-xl transition",
         isWinner
-          ? "ring-4 ring-emerald-400/70 shadow-emerald-300/40"
+          ? "ring-4 ring-emerald-400/70 shadow-emerald-300/30"
           : "ring-0",
       ].join(" ")}
     >
-      {/* Header */}
-      <div className="px-10 pt-10 pb-6 flex flex-col items-center gap-4">
+      {/* header */}
+      <div className="px-10 pt-10 pb-6 flex flex-col items-center gap-4 relative z-[1]">
         <div className="relative">
           <span
-            className={`${headBg} text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl font-semibold`}
+            className={[
+              "text-white w-12 h-12 rounded-full grid place-items-center text-2xl font-bold",
+              "bg-gradient-to-br",
+              headBg,
+            ].join(" ")}
           >
             {choose}
           </span>
@@ -72,39 +80,41 @@ const ResultCard = ({
         <div className="h-px w-full bg-black/5 mt-2" />
       </div>
 
-      {/* Body */}
+      {/* body */}
       <div
-        className={`px-10 md:px-16 py-10 text-center flex-1 flex flex-col gap-6 bg-gradient-to-b ${bodyGrad}`}
+        className={[
+          "px-10 md:px-16 py-10 text-center flex-1 flex flex-col gap-6",
+          "bg-gradient-to-b text-white relative z-[1]",
+          bodyGrad,
+        ].join(" ")}
       >
-        {/* Percent */}
-        <p className="text-white text-5xl font-extrabold leading-none drop-shadow-sm">
+        <p className="text-5xl font-extrabold leading-none drop-shadow-sm">
           {shownPct}%
         </p>
 
-        {/* Progress */}
+        {/* progress */}
         <div className="w-full max-w-xl mx-auto">
           <div
-            className="relative w-full h-5 rounded-full bg-white/30 shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)] overflow-hidden"
+            className="relative w-full h-5 rounded-full bg-white/30 shadow-[inset_0_1px_2px_rgba(0,0,0,.15)] overflow-hidden"
             role="img"
             aria-label={`Percentage bar showing ${target}% for option ${choose}`}
             title={`${target}%`}
           >
             <div
-              className={`h-full ${headBg}`}
+              className="h-full bg-white/80"
               style={{
                 width: `${barPct}%`,
-                transition: "width 200ms ease-out",
+                transition: "width 220ms ease-out",
               }}
             />
           </div>
         </div>
 
-        {/* Votes */}
         <p className="text-white/90 text-base md:text-lg">
           {count} {count === 1 ? "vote" : "votes"}
         </p>
 
-        {/* Avatars */}
+        {/* voters */}
         {voters?.length ? (
           <div className="flex flex-wrap justify-center gap-2 pt-1">
             {voters.map((v) => {
@@ -125,6 +135,11 @@ const ResultCard = ({
           <p className="text-white/80 text-sm">No voters</p>
         )}
       </div>
+
+      {/* winner glow underlay */}
+      {isWinner && (
+        <div className="pointer-events-none absolute inset-x-10 bottom-6 h-24 rounded-full blur-2xl bg-emerald-400/40" />
+      )}
     </div>
   );
 };

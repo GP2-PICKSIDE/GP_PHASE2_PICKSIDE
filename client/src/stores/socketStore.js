@@ -6,6 +6,7 @@ import useGameStore from "./gameStore";
 
 const useSocketStore = create(
   immer((set, get) => ({
+    isConnected: false,
     socketState: undefined,
     error: undefined,
 
@@ -17,6 +18,10 @@ const useSocketStore = create(
         if (code && me?.name) {
           socketInitializer.emit("room:join", { code, name: me.name });
         }
+
+        set((state) => {
+          state.isConnected = true;
+        });
       });
 
       socketInitializer.on("room:state", (room) => {

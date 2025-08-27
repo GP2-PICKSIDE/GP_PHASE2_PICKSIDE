@@ -15,18 +15,16 @@ const CreateRoomcard = () => {
   });
 
   const disabled = isPending;
-
   const baseInput =
-    "w-full rounded-lg pl-10 pr-3 py-3 border bg-white text-gray-900 " +
-    "border-black/10 focus:outline-none focus:ring-2 focus:ring-primary/30 " +
+    "w-full rounded-lg pl-10 pr-3 py-3 border bg-white/70 backdrop-blur-md text-gray-900 " +
+    "border-black/10 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition " +
     (disabled ? "opacity-60 cursor-not-allowed" : "");
 
   return (
-    <section className="relative w-full rounded-2xl bg-white border border-black/5 shadow-md overflow-hidden">
-      {/* header accent */}
-      <div className="h-1 w-full bg-primary" />
+    <section className="relative w-full rounded-2xl bg-white/50 backdrop-blur-xl border border-black/5 shadow-lg overflow-hidden hover:shadow-2xl transition">
+      <div className="h-1 w-full bg-gradient-to-r from-indigo-500 to-pink-500" />
       <div className="px-8 md:px-10 py-8 flex flex-col gap-6">
-        <h2 className="text-2xl font-semibold">Create Room</h2>
+        <h2 className="text-2xl font-bold text-gray-800">🚀 Create Room</h2>
 
         <form
           onSubmit={(e) => {
@@ -38,12 +36,16 @@ const CreateRoomcard = () => {
         >
           {/* Display name */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="displayName" className="text-sm text-gray-700">
+            <label
+              htmlFor="displayName"
+              className="text-sm text-gray-700 font-medium"
+            >
               Display Name <span className="text-red-500">*</span>
             </label>
+
             <div className="relative">
               <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-900"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
@@ -65,12 +67,15 @@ const CreateRoomcard = () => {
 
           {/* Room name */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="roomName" className="text-sm text-gray-700">
+            <label
+              htmlFor="roomName"
+              className="text-sm text-gray-700 font-medium"
+            >
               Room Name <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-900"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
@@ -78,7 +83,6 @@ const CreateRoomcard = () => {
                 <path fill="none" d="M0 0h24v24H0z"></path>
                 <path d="M19 21H5C4.44772 21 4 20.5523 4 20V11L1 11L11.3273 1.6115C11.7087 1.26475 12.2913 1.26475 12.6727 1.6115L23 11L20 11V20C20 20.5523 19.5523 21 19 21ZM6 19H18V9.15745L12 3.7029L6 9.15745V19Z"></path>
               </svg>
-
               <input
                 id="roomName"
                 type="text"
@@ -94,21 +98,14 @@ const CreateRoomcard = () => {
           <button
             type="submit"
             disabled={disabled}
-            className={`w-full rounded-lg px-6 py-3 font-semibold text-white transition cursor-pointer
+            className={`w-full rounded-lg px-6 py-3 font-semibold text-white transition transform cursor-pointer
               ${
                 disabled
-                  ? "bg-primary/60 cursor-not-allowed"
-                  : "bg-primary hover:bg-blue-700"
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700 hover:scale-[1.02]"
               }`}
           >
-            {isPending ? (
-              <span className="inline-flex items-center justify-center gap-2">
-                <span className="h-5 w-5 rounded-full border-2 border-white/40 border-t-white animate-spin" />
-                Creating…
-              </span>
-            ) : (
-              "Create Room"
-            )}
+            {isPending ? "Creating…" : "Create Room"}
           </button>
 
           <p className="text-center text-gray-500 text-sm">
@@ -116,15 +113,6 @@ const CreateRoomcard = () => {
           </p>
         </form>
       </div>
-
-      {/* overlay */}
-      {isPending && (
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] pointer-events-auto flex items-center justify-center">
-          <div className="rounded-xl border border-black/10 bg-white px-6 py-4 shadow-sm">
-            <p className="text-sm text-gray-700">Preparing your room…</p>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
