@@ -10,38 +10,42 @@ const AnswerCard = ({ choose, option, disabled }) => {
   });
 
   const isA = choose === "A";
-  const headBg = isA ? "bg-primary" : "bg-secondary";
+  const headBg = isA ? "from-indigo-500 to-blue-500" : "from-violet-500 to-fuchsia-500";
   const bodyGrad = isA
-    ? "from-primary/10 to-primary/5"
-    : "from-secondary/10 to-secondary/5";
-  const btnBg = isA
-    ? "bg-primary hover:bg-blue-700"
-    : "bg-secondary hover:bg-purple-700";
+    ? "from-indigo-50/60 to-indigo-100/40"
+    : "from-violet-50/60 to-fuchsia-100/40";
+  const btnGrad = isA
+    ? "from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700"
+    : "from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700";
 
   const isLoading = !option || option === "Loading...";
 
   return (
     <div
-      className="
-        w-full h-full flex flex-col rounded-2xl overflow-hidden bg-white
-        shadow-xl transition-all duration-200
-        hover:shadow-2xl
-      "
+      className={[
+        "w-full h-full flex flex-col rounded-2xl overflow-hidden",
+        "bg-white/70 backdrop-blur-xl shadow-lg hover:shadow-2xl",
+        "transition-transform duration-200 hover:-translate-y-0.5",
+        disabled ? "opacity-90" : "",
+      ].join(" ")}
     >
-      {/* Header ringkas */}
+      {/* Header */}
       <div className="px-8 pt-8 pb-4 flex flex-col items-center gap-4">
         <span className="relative">
           <span
-            className={`${headBg} rounded-full w-12 h-12 text-2xl text-white flex items-center justify-center font-semibold`}
+            className={[
+              "rounded-full w-14 h-14 text-2xl text-white",
+              "grid place-items-center font-bold",
+              "bg-gradient-to-br", headBg,
+            ].join(" ")}
           >
             {choose}
           </span>
-          <span className="absolute inset-0 rounded-full ring-4 ring-black/5" />
+          <span className="absolute inset-0 rounded-full ring-4 ring-black/5 pointer-events-none" />
         </span>
 
-        {/* Judul opsi / skeleton */}
         {isLoading ? (
-          <div className="w-52 h-6 rounded-md bg-black/10 animate-pulse" />
+          <div className="w-56 h-6 rounded-md bg-black/10 animate-pulse" />
         ) : (
           <p className="text-center font-semibold text-lg md:text-xl leading-snug">
             {option}
@@ -49,14 +53,10 @@ const AnswerCard = ({ choose, option, disabled }) => {
         )}
       </div>
 
-      {/* garis halus */}
       <div className="h-px w-full bg-black/5" />
 
-      {/* Body lembut + tombol selalu nempel bawah */}
-      <div
-        className={`px-8 md:px-16 py-8 flex-1 flex flex-col justify-end bg-gradient-to-b ${bodyGrad}`}
-      >
-        {/* hint kecil biar nggak terlalu kosong */}
+      {/* Body + CTA selalu di bawah */}
+      <div className={["px-8 md:px-16 py-8 flex-1 flex flex-col justify-end bg-gradient-to-b", bodyGrad].join(" ")}>
         <p className="text-sm text-gray-500 text-center mb-3">
           Tap to choose {choose}
         </p>
@@ -67,12 +67,10 @@ const AnswerCard = ({ choose, option, disabled }) => {
           disabled={disabled || isLoading}
           className={[
             "w-full rounded-lg px-6 py-3 text-white font-semibold",
-            "transition-all duration-150",
+            "bg-gradient-to-r transition-all duration-150",
             "focus:outline-none focus:ring-2 focus:ring-black/10",
-            "active:scale-[0.98]",
-            "disabled:opacity-50 disabled:cursor-not-allowed",
-            "cursor-pointer",
-            btnBg,
+            "active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed",
+            "cursor-pointer", btnGrad,
           ].join(" ")}
           aria-label={`Choose option ${choose}`}
         >

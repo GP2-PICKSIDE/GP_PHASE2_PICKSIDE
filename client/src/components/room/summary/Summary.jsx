@@ -16,7 +16,16 @@ const Summary = () => {
   const overallA = totalVotes ? Math.round((totalA / totalVotes) * 100) : 0;
   const overallB = totalVotes ? 100 - overallA : 0;
 
-  // Top rounds
+  const leader =
+    totalVotes === 0
+      ? null
+      : overallA === overallB
+      ? "tie"
+      : overallA > overallB
+      ? "A"
+      : "B";
+
+  // Top rounds (by votes, tiebreaker = margin)
   const topList = [...history]
     .sort((x, y) => {
       const vx = (x?.tally?.A || 0) + (x?.tally?.B || 0);
@@ -43,19 +52,40 @@ const Summary = () => {
 
   return (
     <>
-      <h1 className="text-2xl md:text-3xl font-semibold text-center mb-6">
-        Game Summary
-      </h1>
+      {/* Header */}
+      <header className="text-center mb-8">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-800">
+          Game Summary
+        </h1>
+        <p className="text-gray-500 mt-1">
+          {history.length > 0
+            ? `Completed ${history.length} round${
+                history.length === 1 ? "" : "s"
+              }.`
+            : "No rounds played."}
+        </p>
+      </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 items-start">
         {/* LEFT — Overall */}
         <div className="flex flex-col gap-6">
-          <section className="w-full rounded-2xl h-full p-8 shadow-md bg-white/70 backdrop-blur-sm border border-black/5">
-            <header className="mb-4">
+          <section className="rounded-2xl p-8 shadow-md bg-white/70 backdrop-blur-sm border border-black/5">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold tracking-tight text-gray-900">
                 Overall
               </h2>
-            </header>
+
+              {leader && leader !== "tie" && (
+                <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200">
+                  Leader: {leader}
+                </span>
+              )}
+              {leader === "tie" && (
+                <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-200">
+                  Tie
+                </span>
+              )}
+            </div>
 
             <ProgressBar
               variant="overall"
@@ -103,9 +133,10 @@ const Summary = () => {
             </p>
           </section>
 
+          {/* CTAs */}
           <button
             onClick={handlePlayAgain}
-            className="w-full bg-primary p-3 rounded-xl text-white font-semibold cursor-pointer hover:bg-blue-700 transition"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 p-3 rounded-xl text-white font-semibold cursor-pointer transition"
           >
             Play again
           </button>
@@ -117,46 +148,52 @@ const Summary = () => {
           </Link>
         </div>
 
-        {/* RIGHT — Rounds */}
+        {/* RIGHT — Per round list */}
         <section className="flex flex-col gap-4">
-          {history.map((round, i) => {
-            const { A: optA, B: optB } = pickLabels(round?.question);
-            const aVotes = round?.tally?.A || 0;
-            const bVotes = round?.tally?.B || 0;
-            const t = aVotes + bVotes;
-            const aPct = t ? Math.round((aVotes / t) * 100) : 0;
-            const bPct = t ? 100 - aPct : 0;
-            const winner = aPct === bPct ? "tie" : aPct > bPct ? "A" : "B";
+          {history.length === 0 ? (
+            <div className="rounded-xl p-6 shadow-sm border border-black/5 bg-white text-gray-500">
+              No rounds to show yet.
+            </div>
+          ) : (
+            history.map((round, i) => {
+              const { A: optA, B: optB } = pickLabels(round?.question);
+              const aVotes = round?.tally?.A || 0;
+              const bVotes = round?.tally?.B || 0;
+              const t = aVotes + bVotes;
+              const aPct = t ? Math.round((aVotes / t) * 100) : 0;
+              const bPct = t ? 100 - aPct : 0;
+              const winner = aPct === bPct ? "tie" : aPct > bPct ? "A" : "B";
 
-            return (
-              <article
-                key={i}
-                className="rounded-xl p-6 shadow-sm border border-black/5 bg-white"
-              >
-                <h3 className="font-semibold text-gray-900">
-                  {i + 1}. {round?.question?.question}
-                </h3>
+              return (
+                <article
+                  key={i}
+                  className="rounded-xl p-6 shadow-sm border border-black/5 bg-white"
+                >
+                  <h3 className="font-semibold text-gray-900">
+                    {i + 1}. {round?.question?.question}
+                  </h3>
 
-                <div className="mt-3">
-                  <ProgressBar
-                    variant={
-                      winner === "A"
-                        ? "roundA"
-                        : winner === "B"
-                        ? "roundB"
-                        : "overall"
-                    }
-                    aPct={aPct}
-                    bPct={bPct}
-                    aLabel={`A. ${optA}`}
-                    bLabel={`B. ${optB}`}
-                    aVotes={aVotes}
-                    bVotes={bVotes}
-                  />
-                </div>
-              </article>
-            );
-          })}
+                  <div className="mt-3">
+                    <ProgressBar
+                      variant={
+                        winner === "A"
+                          ? "roundA"
+                          : winner === "B"
+                          ? "roundB"
+                          : "overall"
+                      }
+                      aPct={aPct}
+                      bPct={bPct}
+                      aLabel={`A. ${optA}`}
+                      bLabel={`B. ${optB}`}
+                      aVotes={aVotes}
+                      bVotes={bVotes}
+                    />
+                  </div>
+                </article>
+              );
+            })
+          )}
         </section>
       </div>
     </>

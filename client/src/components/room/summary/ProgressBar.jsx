@@ -22,13 +22,23 @@ const ProgressBar = ({
     </div>
   );
 
+  const PercentOutside = ({ value, side }) => (
+    <span
+      className={`absolute -top-6 text-xs font-semibold text-gray-700 ${
+        side === "left" ? "left-0" : "right-0"
+      }`}
+    >
+      {value}%
+    </span>
+  );
+
   return (
     <div className="w-full">
       <TopLabels />
 
       {/* Track */}
       <div
-        className="w-full h-5 rounded-full overflow-hidden flex bg-gray-200"
+        className="relative w-full h-5 rounded-full overflow-hidden flex bg-gray-200"
         role="img"
         aria-label={`${aLabel} ${A}%, ${bLabel} ${B}%`}
         title={`${aLabel} ${A}%, ${bLabel} ${B}%`}
@@ -36,35 +46,55 @@ const ProgressBar = ({
         {variant === "overall" ? (
           <>
             <div
-              className="h-full flex items-center justify-center text-white text-xs transition-[width] duration-600 ease-out bg-gradient-to-r from-primary to-primary/80"
+              className="h-full flex items-center justify-center text-white text-xs transition-[width] duration-500 ease-out bg-gradient-to-r from-indigo-600 to-indigo-500"
               style={{ width: `${A}%` }}
             >
               {A >= 14 && <span className="px-2">{A}%</span>}
             </div>
             <div
-              className="h-full flex items-center justify-center text-white text-xs transition-[width] duration-600 ease-out bg-gradient-to-r from-secondary to-secondary/80"
+              className="h-full flex items-center justify-center text-white text-xs transition-[width] duration-500 ease-out bg-gradient-to-r from-violet-600 to-fuchsia-500"
               style={{ width: `${B}%` }}
             >
               {B >= 14 && <span className="px-2">{B}%</span>}
             </div>
+
+            {/* fallback label if too small */}
+            {A < 14 && A > 0 && <PercentOutside value={A} side="left" />}
+            {B < 14 && B > 0 && <PercentOutside value={B} side="right" />}
           </>
         ) : (
-          <div
-            className={`h-full flex items-center justify-center text-white text-xs transition-[width] duration-600 ease-out ${
-              variant === "roundA" ? "bg-primary" : "bg-secondary"
-            }`}
-            style={{ width: `${variant === "roundA" ? A : B}%` }}
-          >
+          <>
+            <div
+              className={`h-full transition-[width] duration-500 ease-out ${
+                variant === "roundA"
+                  ? "bg-indigo-600"
+                  : "bg-violet-600"
+              }`}
+              style={{ width: `${variant === "roundA" ? A : B}%` }}
+            />
+            {(variant === "roundA" ? A : B) < 14 &&
+              (variant === "roundA" ? A : B) > 0 && (
+                <PercentOutside
+                  value={variant === "roundA" ? A : B}
+                  side={variant === "roundA" ? "left" : "right"}
+                />
+              )}
             {(variant === "roundA" ? A : B) >= 14 && (
-              <span className="px-2">{variant === "roundA" ? `${A}%` : `${B}%`}</span>
+              <span className="absolute inset-0 grid place-items-center text-[11px] font-semibold text-white">
+                {variant === "roundA" ? `${A}%` : `${B}%`}
+              </span>
             )}
-          </div>
+          </>
         )}
       </div>
 
       <div className="flex justify-between text-xs text-gray-600 mt-1">
-        <span>{aVotes} vote{aVotes === 1 ? "" : "s"}</span>
-        <span>{bVotes} vote{bVotes === 1 ? "" : "s"}</span>
+        <span>
+          {aVotes} vote{aVotes === 1 ? "" : "s"}
+        </span>
+        <span>
+          {bVotes} vote{bVotes === 1 ? "" : "s"}
+        </span>
       </div>
     </div>
   );

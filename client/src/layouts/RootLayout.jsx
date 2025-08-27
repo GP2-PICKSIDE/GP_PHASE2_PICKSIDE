@@ -8,15 +8,16 @@ const RootLayout = () => {
 
   useEffect(() => {
     internalSocketConnect();
-
     return () => internalSocketDisconnect();
   }, [internalSocketConnect, internalSocketDisconnect]);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-indigo-50 via-white to-pink-50">
       <NavBar />
-      <Outlet />
-    </>
+      <main className="flex-1">
+        <Outlet />
+      </main>
+    </div>
   );
 };
 

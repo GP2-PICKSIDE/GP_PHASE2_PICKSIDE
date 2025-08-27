@@ -8,23 +8,23 @@ const HostSettingCard = () => {
 
   const themes = ["funny", "life", "food", "friends", "travel"];
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["startRoom"],
     mutationFn: FnStartRoom,
   });
 
-  const disabled = !isHost;
+  const disabled = !isHost || isPending;
 
   const baseInput =
-    "w-full rounded-lg p-3 border bg-white text-gray-900 " +
-    "border-black/10 focus:outline-none focus:ring-2 focus:ring-primary/30 " +
+    "w-full rounded-xl p-3 border bg-white/70 backdrop-blur-md text-gray-900 " +
+    "border-black/10 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition " +
     (disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer");
 
   const labelCls = "text-sm text-gray-700";
 
   return (
-    <section className="w-full rounded-2xl bg-white/80 backdrop-blur-sm border border-black/5 shadow-md px-8 md:px-12 py-10 flex flex-col gap-6">
-      <h2 className="text-xl font-semibold tracking-tight text-gray-900">
+    <section className="w-full rounded-2xl bg-white/60 backdrop-blur-xl border border-black/5 shadow-lg px-8 md:px-12 py-10 transition hover:shadow-2xl">
+      <h2 className="text-xl font-bold tracking-tight text-gray-900">
         Room Settings
       </h2>
 
@@ -33,7 +33,7 @@ const HostSettingCard = () => {
           e.preventDefault();
           if (!disabled) mutate();
         }}
-        className="flex flex-col gap-5"
+        className="mt-6 flex flex-col gap-5"
       >
         {/* Theme */}
         <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
@@ -103,14 +103,14 @@ const HostSettingCard = () => {
           <button
             type="submit"
             disabled={disabled}
-            className={`w-full rounded-lg px-4 py-3 font-semibold text-white transition cursor-pointer
+            className={`w-full rounded-xl px-6 py-3 font-semibold text-white transition transform cursor-pointer
               ${
                 disabled
-                  ? "bg-primary/60 cursor-not-allowed"
-                  : "bg-primary hover:bg-blue-700"
+                  ? "bg-indigo-300 cursor-not-allowed"
+                  : "bg-gradient-to-r from-indigo-600 to-pink-600 hover:scale-[1.02] hover:shadow-lg"
               }`}
           >
-            Start Game
+            {isPending ? "Starting…" : "Start Game"}
           </button>
           <p className="text-center text-gray-500 text-xs mt-2">
             Settings are locked after the game starts.
