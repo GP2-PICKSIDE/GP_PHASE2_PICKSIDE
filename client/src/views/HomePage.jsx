@@ -3,22 +3,26 @@ import JoinRoomCard from "../components/home/JoinRoomCard";
 
 const HomePage = () => {
   return (
-    <div className="px-8 md:px-16 py-6 flex flex-col gap-12 justify-center items-center min-h-screen">
-      <div className="text-center flex flex-col gap-2">
-        <h1 className="text-3xl md:text-4xl font-semibold">
+    <div
+      className="
+        min-h-screen px-6 md:px-10 py-10
+        bg-white
+        bg-[radial-gradient(1200px_600px_at_50%_-200px,rgba(59,130,246,0.06),transparent)]
+      "
+    >
+      <header className="text-center mb-10">
+        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
           Create or Join Room
         </h1>
-        <p className="text-gray-500">Create or join room to start</p>
-      </div>
+        <p className="text-gray-500 mt-1">Create a room or enter a code to start</p>
+      </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
-        {/* Create Room */}
+      <main className="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
         <CreateRoomcard />
-
-        {/* Join Room */}
         <JoinRoomCard />
-      </div>
+      </main>
     </div>
   );
 };
+
 export default HomePage;

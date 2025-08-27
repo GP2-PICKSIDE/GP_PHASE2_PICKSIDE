@@ -18,10 +18,14 @@ const Reveal = () => {
   // tally
   const aVotes = reveal?.tally?.A || 0;
   const bVotes = reveal?.tally?.B || 0;
+  const optA = reveal?.question?.options?.[0] || "Option A";
+  const optB = reveal?.question?.options?.[1] || "Option B";
 
   const total = aVotes + bVotes;
   const aPct = total === 0 ? 0 : Math.round((aVotes / total) * 100);
   const bPct = total === 0 ? 0 : 100 - aPct;
+  const isAWinner = aPct > bPct;
+  const isBWinner = bPct > aPct;
 
   const allVoters = Array.isArray(reveal?.voters) ? reveal.voters : [];
   const votersA = allVoters.filter(
@@ -43,17 +47,21 @@ const Reveal = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 items-stretch">
         <ResultCard
           choose="A"
+          label={optA || "Option A"}
           percent={aPct}
           count={aVotes}
           voters={votersA}
           players={players}
+          isWinner={isAWinner}
         />
         <ResultCard
           choose="B"
+          label={optB || "Option B"}
           percent={bPct}
           count={bVotes}
           voters={votersB}
           players={players}
+          isWinner={isBWinner}
         />
       </div>
     </>

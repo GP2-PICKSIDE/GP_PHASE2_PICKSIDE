@@ -173,20 +173,22 @@ io.on("connection", (socket) => {
     const pid = socket.id;
     const current = room.questions[room.roundIndex];
     if (!current.votes) current.votes = {};
+
     const norm = normalizeChoice(choice);
     if (!norm) return;
     current.votes[pid] = norm;
 
-    // Broadcast progress (biar client tahu siapa sudah vote + update border avatar)
     room.question = current;
     emitRoomState(code);
 
-    // Jika semua sudah vote -> langsung reveal (tanpa nunggu deadline)
-    const totalPlayers = Object.keys(room.players).length;
-    const totalVotes = Object.keys(current.votes).length;
-    if (totalVotes >= totalPlayers) endRound(code);
+    const totalPlayers = Object.values(room.players).filter(
+      (p) => p.connected
+    ).length;
+    const totalVotes = Object.keys(current.votes).filter(
+      (id) => room.players[id]?.connected
+    ).length;
 
-    console.log("vote from", socket.id, "choice:", choice);
+    if (totalVotes >= totalPlayers) endRound(code);
   });
 
   socket.on("room:restart", ({ code }) => {
@@ -223,19 +225,16 @@ io.on("connection", (socket) => {
     const room = rooms.get(code);
     if (!room) return;
 
-    // hapus player
-    delete room.players[socket.id];
-
-    // host yang keluar → promosikan host baru (jika ada)
-    if (room.hostId === socket.id) {
-      const ids = Object.keys(room.players);
-      room.hostId = ids[0] || null;
+    if (room.players[socket.id]) {
+      room.players[socket.id].connected = false;
     }
 
-    // kosong → hapus room dan selesai
-    if (Object.keys(room.players).length === 0) {
-      rooms.delete(code);
-      return;
+    // kalau host keluar → promosikan host baru yang masih connected
+    if (room.hostId === socket.id) {
+      const connectedIds = Object.keys(room.players).filter(
+        (id) => room.players[id].connected
+      );
+      room.hostId = connectedIds[0] || null;
     }
 
     io.to(code).emit("room:state", {
@@ -245,7 +244,6 @@ io.on("connection", (socket) => {
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
-      totalRounds: room.settings.rounds,
       hostId: room.hostId,
       history: room.history,
     });

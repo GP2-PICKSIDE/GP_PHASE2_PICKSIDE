@@ -13,91 +13,111 @@ const HostSettingCard = () => {
     mutationFn: FnStartRoom,
   });
 
+  const disabled = !isHost;
+
+  const baseInput =
+    "w-full rounded-lg p-3 border bg-white text-gray-900 " +
+    "border-black/10 focus:outline-none focus:ring-2 focus:ring-primary/30 " +
+    (disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer");
+
+  const labelCls = "text-sm text-gray-700";
+
   return (
-    <div className="w-full bg-white shadow-xl px-8 md:px-16 py-12 flex flex-col gap-8 rounded-xl">
-      <p className="font-semibold text-2xl">Room Settings</p>
+    <section className="w-full rounded-2xl bg-white/80 backdrop-blur-sm border border-black/5 shadow-md px-8 md:px-12 py-10 flex flex-col gap-6">
+      <h2 className="text-xl font-semibold tracking-tight text-gray-900">
+        Room Settings
+      </h2>
 
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          mutate();
+          if (!disabled) mutate();
         }}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-5"
       >
-        <div className="flex justify-between gap-4 w-full items-center">
-          <label className="w-full" htmlFor="theme">
+        {/* Theme */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
+          <label htmlFor="theme" className={labelCls}>
             Theme
           </label>
-          <select
-            id="theme"
-            className={`w-full rounded-lg p-3 border border-gray-400 ${
-              !isHost ? "bg-gray-300/50" : ""
-            }`}
-            onChange={(e) => setRoomTheme(e.target.value)}
-            value={settings?.theme}
-            disabled={!isHost ? true : false}
-          >
-            {themes.map((theme) => (
-              <option key={theme} value={theme}>
-                {theme.charAt(0).toUpperCase() + theme.slice(1)}
-              </option>
-            ))}
-          </select>
+          <div className="sm:col-span-2">
+            <select
+              id="theme"
+              className={baseInput}
+              onChange={(e) => setRoomTheme(e.target.value)}
+              value={settings?.theme}
+              disabled={disabled}
+            >
+              {themes.map((theme) => (
+                <option key={theme} value={theme}>
+                  {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <div className="flex justify-between gap-4 w-full items-center">
-          <label className="w-full" htmlFor="language">
+        {/* Language */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
+          <label htmlFor="language" className={labelCls}>
             Language
           </label>
-          <select
-            id="language"
-            disabled={!isHost ? true : false}
-            value={settings?.lang}
-            onChange={(e) => setRoomLang(e.target.value)}
-            className={`w-full rounded-lg p-3 border border-gray-400 ${
-              !isHost ? "bg-gray-300/50" : ""
-            }`}
-          >
-            <option value="en">English</option>
-            <option value="id">Indonesia</option>
-          </select>
+          <div className="sm:col-span-2">
+            <select
+              id="language"
+              value={settings?.lang}
+              onChange={(e) => setRoomLang(e.target.value)}
+              className={baseInput}
+              disabled={disabled}
+            >
+              <option value="en">English</option>
+              <option value="id">Indonesia</option>
+            </select>
+          </div>
         </div>
 
-        <div className="flex gap-4 items-center">
-          <label className="w-full" htmlFor="totalRounds">
+        {/* Rounds */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
+          <label htmlFor="totalRounds" className={labelCls}>
             Rounds
           </label>
-          <input
-            type="number"
-            id="totalRounds"
-            value={settings?.rounds}
-            onChange={(e) => setTotalRounds(e.target.value)}
-            min={1}
-            max={10}
-            disabled={!isHost ? true : false}
-            className={`w-full rounded-lg p-3 border border-gray-400 ${
-              !isHost ? "bg-gray-300/50" : ""
-            }`}
-            placeholder="Rounds"
-          />
+          <div className="sm:col-span-2">
+            <input
+              type="number"
+              id="totalRounds"
+              value={settings?.rounds}
+              onChange={(e) => setTotalRounds(e.target.value)}
+              min={1}
+              max={10}
+              disabled={disabled}
+              className={baseInput}
+              placeholder="Rounds"
+              inputMode="numeric"
+            />
+            <p className="mt-1 text-xs text-gray-500">Min 1 • Max 10</p>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={!isHost ? true : false}
-          className={` text-white rounded-lg p-3   ${
-            !isHost
-              ? "bg-primary/50 cursor-not-allowed"
-              : "hover:bg-blue-700 bg-primary cursor-pointer"
-          }`}
-        >
-          Start Game
-        </button>
-        <p className="text-center text-gray-400 text-sm">
-          Setting will be frozen after start.
-        </p>
+        {/* Actions */}
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={disabled}
+            className={`w-full rounded-lg px-4 py-3 font-semibold text-white transition cursor-pointer
+              ${
+                disabled
+                  ? "bg-primary/60 cursor-not-allowed"
+                  : "bg-primary hover:bg-blue-700"
+              }`}
+          >
+            Start Game
+          </button>
+          <p className="text-center text-gray-500 text-xs mt-2">
+            Settings are locked after the game starts.
+          </p>
+        </div>
       </form>
-    </div>
+    </section>
   );
 };
 
