@@ -189,6 +189,33 @@ io.on("connection", (socket) => {
     console.log("vote from", socket.id, "choice:", choice);
   });
 
+  socket.on("room:restart", ({ code }) => {
+    const room = rooms.get(code);
+    if (!room) return;
+
+    if (room._deadlineTimer) clearTimeout(room._deadlineTimer);
+
+    room.gameState = "lobby";
+    room.roundIndex = 0;
+    room.deadline = 0;
+    room.question = null;
+    room.reveal = null;
+    room.history = [];
+
+    io.to(code).emit("room:state", {
+      code,
+      gameState: room.gameState,
+      roomName: room.roomName,
+      settings: room.settings,
+      players: Object.values(room.players),
+      roundIndex: room.roundIndex,
+      deadline: room.deadline,
+      question: room.question,
+      hostId: room.hostId,
+      history: room.history,
+    });
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected:", socket.id);
 

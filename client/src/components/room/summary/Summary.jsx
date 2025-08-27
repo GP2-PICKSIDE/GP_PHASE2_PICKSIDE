@@ -1,9 +1,11 @@
 import useGameStore from "../../../stores/gameStore";
+import useSocketStore from "../../../stores/socketStore";
 import ProgressBar from "./ProgressBar";
 import { Link } from "react-router";
 
 const Summary = () => {
-  const { players = [], history = [], settings = {} } = useGameStore();
+  const { players = [], history = [], settings = {}, code } = useGameStore();
+  const { socketState } = useSocketStore();
 
   const totalPlayers = players.length;
 
@@ -23,6 +25,11 @@ const Summary = () => {
       return my - mx;
     })
     .slice(0, 3);
+
+  const handlePlayAgain = () => {
+    if (!socketState || !code) return;
+    socketState.emit("room:restart", { code });
+  };
 
   return (
     <>
@@ -76,12 +83,13 @@ const Summary = () => {
           </div>
 
           <button
+            onClick={handlePlayAgain}
             className="w-full bg-primary p-3 rounded-xl text-white cursor-pointer hover:bg-blue-700"
           >
             Play again
           </button>
           <Link
-            to="/"
+            to="/play"
             className="w-full border border-gray-400 p-3 rounded-xl cursor-pointer hover:bg-gray-200 text-center"
           >
             Back to Home
