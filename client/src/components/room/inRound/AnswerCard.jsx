@@ -12,7 +12,9 @@ const AnswerCard = ({ choose, option }) => {
         <button
           type="button"
           className={`${
-            choose === "A" ? "bg-primary" : "bg-secondary"
+            choose === "A"
+              ? "bg-primary hover:bg-blue-700 cursor-pointer"
+              : "bg-secondary hover:bg-purple-700 cursor-pointer"
           } text-white rounded-lg px-8 py-3 w-full`}>
           Choose {choose}
         </button>
