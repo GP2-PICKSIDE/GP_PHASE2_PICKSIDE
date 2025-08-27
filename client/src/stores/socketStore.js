@@ -31,15 +31,23 @@ const useSocketStore = create(
             : state.isHost,
           me: { ...state.me, id: socketInitializer.id },
         }));
-      }),
-      
-      socketInitializer.on("room:error", (err) => {
-          useGameStore.setState((state) => ({
-            ...state,
-            error: err?.message || "ROOM_ERROR",
-          }));
+      });
 
-      }),
+      socketInitializer.on("round:reveal", (payload) => {
+        // payload: { code, roundIndex, question, tally, voters, nextAt }
+        useGameStore.setState((state) => ({
+          ...state,
+          gameState: "reveal",
+          reveal: payload, // simpan untuk komponen Reveal
+        }));
+      });
+
+      socketInitializer.on("room:error", (err) => {
+        useGameStore.setState((state) => ({
+          ...state,
+          error: err?.message || "ROOM_ERROR",
+        }));
+      });
 
       set((state) => {
         state.socketState = socketInitializer;

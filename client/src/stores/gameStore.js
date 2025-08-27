@@ -12,7 +12,7 @@ const useGameStore = create(
     isHost: false,
     settings: { theme: "funny", lang: "id", rounds: 5 },
 
-    gameState: "in_round",
+    gameState: "idle",
     players: [],
     roundIndex: 0,
     deadline: null,
@@ -67,6 +67,12 @@ const useGameStore = create(
       }
 
       socketState.emit("room:start", { code, settings });
+    },
+
+    FnVote: (choice) => {
+      const { socketState } = useSocketStore.getState();
+      const { code } = useGameStore.getState();
+      socketState.emit("round:vote", { code, choice });
     },
   }))
 );

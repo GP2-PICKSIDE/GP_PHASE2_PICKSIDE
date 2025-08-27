@@ -1,58 +1,60 @@
 import { initials } from "../../../utils/initialsName";
 import AnswerCard from "./AnswerCard";
-import axios from "axios";
-import { BASE_URL } from "../../../utils/constant";
-import { useState, useEffect } from "react";
 import useGameStore from "../../../stores/gameStore";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const InRound = () => {
-  const { players = [], settings } = useGameStore();
+  const { players = [], question, roundIndex, deadline, me } = useGameStore();
+  const title = question?.question || "Loading...";
+  const options = question?.options || [];
 
-  const [question, setQuestion] = useState(null);
-  const [options, setOptions] = useState([]);
-
+  const [left, setLeft] = useState(0);
   useEffect(() => {
-    const generateQuestion = async () => {
-      try {
-        const { data } = await axios.post(`${BASE_URL}/generateAi`, {
-          theme: settings?.theme,
-          lang: settings?.lang,
-        });
+    const tick = () => setLeft(Math.max(0, (deadline || 0) - Date.now()));
+    tick();
+    const t = setInterval(tick, 250);
+    return () => clearInterval(t);
+  }, [deadline]);
 
-        setQuestion(data.question);
-        setOptions(data.options || []);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    generateQuestion();
-  }, [settings]);
+  const secs = Math.ceil(left / 1000);
+  // cek sudah vote (untuk disable tombol)
+  const hasVoted = !!question?.votes?.[me?.id];
 
   return (
     <>
-      <h1 className="text-xl md:text-3xl font-semibold text-center">
-        Would you rather...
-        <p className="mt-6 text-4xl font-bold">{question}</p>
-      </h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 text-2xl">
-        <AnswerCard choose="A" option={options[0]} />
-        <AnswerCard choose="B" option={options[1]} />
+      <div className="flex flex-col items-center gap-2">
+        <h1 className="text-xl md:text-3xl font-semibold text-center">
+          Would you rather...
+          <p className="mt-6 text-4xl font-bold">{title}</p>
+        </h1>
+        <div className="text-gray-500">
+          Round {roundIndex + 1} • Time left: <b>{secs}s</b>
+        </div>
       </div>
 
-      {/* PlayerAvatar -> initials */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 text-2xl">
+        <AnswerCard choose="A" option={options[0]} disabled={hasVoted} />
+        <AnswerCard choose="B" option={options[1]} disabled={hasVoted} />
+      </div>
+
+      {/* PlayerAvatar -> initials, border hijau -> sudah vote */}
       <div className="flex gap-4 flex-wrap">
-        {players.map((player) => (
-          <div
-            key={player.id}
-            className={`flex items-center justify-center rounded-full shrink-0
-                      h-10 w-10 md:h-12 md:w-12 bg-secondary ring-1 ring-inset ring-secondary`}
-          >
-            <span className="font-semibold text-sm md:text-base select-none text-white">
-              {initials(player.name || "")}
-            </span>
-          </div>
-        ))}
+        {players.map((player) => {
+          const voted = !!question?.votes?.[player.id];
+          return (
+            <div
+              key={player.id}
+              className={`flex items-center justify-center rounded-full shrink-0
+                h-10 w-10 md:h-12 md:w-12 bg-secondary ring-1 ring-inset ring-secondary
+                ${voted ? "border-4 border-success" : ""}`}
+            >
+              <span className="font-semibold text-sm md:text-base select-none text-white">
+                {initials(player.name || "")}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </>
   );
