@@ -9,14 +9,10 @@ const JoinRoomCard = () => {
   const { displayName, roomCode, setRoomCode, setDisplayName } = useAllStore();
 
   const { mutate } = useMutation({
-    mutationKey: ["createRoom"],
+    mutationKey: ["joinRoom"],
     mutationFn: FnJoinRoom,
-    onSuccess: () => {
-      navigate("/room");
-    },
-    onError: (err) => {
-      console.error(err);
-    },
+    onSuccess: () => navigate("/room"),
+    onError: (err) => console.error(err),
   });
 
   return (

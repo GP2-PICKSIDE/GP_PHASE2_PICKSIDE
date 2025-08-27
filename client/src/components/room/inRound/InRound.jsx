@@ -10,23 +10,22 @@ const InRound = () => {
   const [question, setQuestion] = useState(null);
   const [options, setOptions] = useState([]);
 
-  const generateQuestion = async () => {
-    try {
-      const { data } = await axios.post(`${BASE_URL}/generateAi`, {
-        theme,
-        lang,
-      });
-
-      setQuestion(data.question);
-      setOptions(data.options || []);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
+    const generateQuestion = async () => {
+      try {
+        const { data } = await axios.post(`${BASE_URL}/generateAi`, {
+          theme,
+          lang,
+        });
+
+        setQuestion(data.question);
+        setOptions(data.options || []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
     generateQuestion();
-  }, []);
+  }, [lang, theme]);
 
   return (
     <>

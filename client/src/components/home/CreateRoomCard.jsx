@@ -11,12 +11,8 @@ const CreateRoomcard = () => {
   const { mutate } = useMutation({
     mutationKey: ["createRoom"],
     mutationFn: FnCreateRoom,
-    onSuccess: () => {
-      navigate("/room");
-    },
-    onError: (err) => {
-      console.error(err);
-    },
+    onSuccess: () => navigate("/room"),
+    onError: (err) => console.error(err),
   });
 
   return (
