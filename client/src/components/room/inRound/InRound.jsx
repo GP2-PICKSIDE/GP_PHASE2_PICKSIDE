@@ -70,8 +70,7 @@ const InRound = () => {
           <div
             key={player.id}
             className={`flex items-center justify-center rounded-full shrink-0
-                      h-10 w-10 md:h-12 md:w-12 bg-secondary ring-1 ring-inset ring-secondary`}
-          >
+                      h-10 w-10 md:h-12 md:w-12 bg-secondary ring-1 ring-inset ring-secondary`}>
             <span className="font-semibold text-sm md:text-base select-none text-white">
               {initials(player.name || "")}
             </span>
