@@ -12,6 +12,7 @@ function createTimerHelpers({ io, rooms }) {
       deadline: room.deadline,
       question: room.question,
       hostId: room.hostId,
+      history: room.history,
     });
   }
 
@@ -67,17 +68,36 @@ function createTimerHelpers({ io, rooms }) {
       else tally.A++;
     });
 
-    const voters = Object.entries(current.votes || {}).map(([id, choice]) => ({ id, choice }));
+    const voters = Object.entries(current.votes || {}).map(([id, choice]) => ({
+      id,
+      choice,
+    }));
+
+    const options =
+      current?.options && typeof current.options === "object"
+        ? current.options
+        : {
+            A: current?.optionA ?? current?.A ?? current?.a ?? "Option A",
+            B: current?.optionB ?? current?.B ?? current?.b ?? "Option B",
+          };
+
+    room.history.push({
+      roundIndex: room.roundIndex,
+      question: { question: current?.question ?? "—", options },
+      tally,
+      voters,
+    });
 
     clearTimeout(room._deadlineTimer);
     const nextAt = Date.now() + 5_000;
     io.to(code).emit("round:reveal", {
       code,
       roundIndex: room.roundIndex,
-      question: { question: current.question, options: current.options },
+      question: { question: current?.question ?? "—", options },
       tally,
       voters,
       nextAt,
+      history: room.history,
     });
 
     room._deadlineTimer = setTimeout(() => startNextRound(code), 5_000);

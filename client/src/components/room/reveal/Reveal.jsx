@@ -18,13 +18,18 @@ const Reveal = () => {
   // tally
   const aVotes = reveal?.tally?.A || 0;
   const bVotes = reveal?.tally?.B || 0;
-  const total = Math.max(1, aVotes + bVotes);
-  const aPct = Math.round((aVotes / total) * 100);
-  const bPct = 100 - aPct;
+
+  const total = aVotes + bVotes;
+  const aPct = total === 0 ? 0 : Math.round((aVotes / total) * 100);
+  const bPct = total === 0 ? 0 : 100 - aPct;
 
   const allVoters = Array.isArray(reveal?.voters) ? reveal.voters : [];
-  const votersA = allVoters.filter((v) => v.choice === "A");
-  const votersB = allVoters.filter((v) => v.choice === "B");
+  const votersA = allVoters.filter(
+    (v) => String(v.choice).toUpperCase() === "A"
+  );
+  const votersB = allVoters.filter(
+    (v) => String(v.choice).toUpperCase() === "B"
+  );
 
   return (
     <>
@@ -35,7 +40,7 @@ const Reveal = () => {
         <p>Next round starting... {secs}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 items-stretch">
         <ResultCard
           choose="A"
           percent={aPct}

@@ -26,6 +26,9 @@ const useSocketStore = create(
           roundIndex: room.roundIndex,
           deadline: room.deadline,
           question: room.question,
+          history: Array.isArray(room.history)
+            ? room.history
+            : state.history ?? [],
           isHost: room.hostId
             ? room.hostId === socketInitializer.id
             : state.isHost,
@@ -38,7 +41,16 @@ const useSocketStore = create(
         useGameStore.setState((state) => ({
           ...state,
           gameState: "reveal",
-          reveal: payload, // simpan untuk komponen Reveal
+          reveal: payload,
+          history: [
+            ...(state.history ?? []),
+            {
+              roundIndex: payload.roundIndex,
+              question: payload.question, // { question, options }
+              tally: payload.tally, // { A, B }
+              voters: payload.voters, // [{id, choice}, ...]
+            },
+          ],
         }));
       });
 

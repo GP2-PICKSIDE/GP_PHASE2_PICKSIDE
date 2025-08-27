@@ -6,7 +6,7 @@ const AnswerCard = ({ choose, option, disabled }) => {
 
   const { mutate } = useMutation({
     mutationKey: ["vote"],
-    mutationFn: FnVote,
+    mutationFn: (choice) => FnVote(choice),
   });
 
   return (
@@ -22,7 +22,7 @@ const AnswerCard = ({ choose, option, disabled }) => {
         <p className="text-center font-semibold">{option || "Loading..."}</p>
         <button
           type="button"
-          onClick={() => mutate()}
+          onClick={() => mutate(choose)}
           disabled={disabled}
           className={`${
             choose === "A"

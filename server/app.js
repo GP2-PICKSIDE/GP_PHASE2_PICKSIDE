@@ -29,6 +29,14 @@ const { scheduleDeadline, emitRoomState, endRound } = createTimerHelpers({
   rooms,
 });
 
+function normalizeChoice(x) {
+  const c = String(x ?? "")
+    .trim()
+    .toUpperCase();
+  if (c === "A" || c === "B") return c;
+  return null;
+}
+
 io.on("connection", (socket) => {
   console.log(`User ${socket.id} is connected`);
 
@@ -67,6 +75,7 @@ io.on("connection", (socket) => {
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
+      history: room.history,
     });
     console.log(`Room with code "${code}" created by "${name}"`);
   });
@@ -88,6 +97,7 @@ io.on("connection", (socket) => {
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
+      history: room.history,
     });
 
     console.log(`${name} joined room with code ${code}`);
@@ -117,6 +127,7 @@ io.on("connection", (socket) => {
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
+      history: room.history,
     });
   });
 
@@ -148,6 +159,7 @@ io.on("connection", (socket) => {
       roundIndex: room.roundIndex,
       question: room.question,
       hostId: room.hostId,
+      history: room.history,
     });
 
     scheduleDeadline(code);
@@ -161,7 +173,9 @@ io.on("connection", (socket) => {
     const pid = socket.id;
     const current = room.questions[room.roundIndex];
     if (!current.votes) current.votes = {};
-    current.votes[pid] = choice === "B" ? "B" : "A";
+    const norm = normalizeChoice(choice);
+    if (!norm) return;
+    current.votes[pid] = norm;
 
     // Broadcast progress (biar client tahu siapa sudah vote + update border avatar)
     room.question = current;
@@ -171,6 +185,8 @@ io.on("connection", (socket) => {
     const totalPlayers = Object.keys(room.players).length;
     const totalVotes = Object.keys(current.votes).length;
     if (totalVotes >= totalPlayers) endRound(code);
+
+    console.log("vote from", socket.id, "choice:", choice);
   });
 
   socket.on("disconnect", () => {
@@ -203,6 +219,7 @@ io.on("connection", (socket) => {
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
+      history: room.history,
     });
   });
 });
