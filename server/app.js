@@ -245,6 +245,7 @@ io.on("connection", (socket) => {
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
+      totalRounds: room.settings.rounds,
       hostId: room.hostId,
       history: room.history,
     });

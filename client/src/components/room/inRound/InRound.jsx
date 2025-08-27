@@ -21,6 +21,22 @@ const InRound = () => {
   // cek sudah vote (untuk disable tombol)
   const hasVoted = !!question?.votes?.[me?.id];
 
+  useEffect(() => {
+    if (timer <= 0) return;
+
+    const interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timer]);
+
   return (
     <>
       <div className="flex flex-col items-center gap-2">
@@ -33,6 +49,11 @@ const InRound = () => {
         </div>
       </div>
 
+      {/* Timer */}
+      <p className="text-center text-red-500 text-2xl font-bold">
+        {timer > 0 ? `Waktu tersisa: ${timer}s` : "Waktu habis!"}
+      </p>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 text-2xl">
         <AnswerCard choose="A" option={options[0]} disabled={hasVoted} />
         <AnswerCard choose="B" option={options[1]} disabled={hasVoted} />
@@ -40,6 +61,7 @@ const InRound = () => {
 
       {/* PlayerAvatar -> initials, border hijau -> sudah vote */}
       <div className="flex gap-4 flex-wrap">
+
         {players.map((player) => {
           const voted = !!question?.votes?.[player.id];
           return (
