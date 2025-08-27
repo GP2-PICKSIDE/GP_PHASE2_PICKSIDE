@@ -1,8 +1,8 @@
 import { Link } from "react-router";
 import useSocketStore from "../stores/socketStore";
 
-const NavBar = ({ isConnecting, isConnected }) => {
-  const { socketState } = useSocketStore();
+const NavBar = () => {
+  const { isConnected } = useSocketStore();
 
   return (
     <nav className="flex justify-between px-8 md:px-16 py-6 items-center">
@@ -13,9 +13,7 @@ const NavBar = ({ isConnecting, isConnected }) => {
       <div className="flex gap-2 items-center">
         <span
           className={`w-3 h-3 ${
-            isConnecting
-              ? "bg-gray-300"
-              : !socketState || !socketState.connected
+            !isConnected
               ? "bg-error"
               : isConnected
               ? "bg-success"
@@ -23,9 +21,7 @@ const NavBar = ({ isConnecting, isConnected }) => {
           } rounded-full`}
         ></span>
         <p>
-          {isConnecting
-            ? "Connecting..."
-            : !socketState || !socketState.connected
+          {!isConnected
             ? "Disconnected"
             : isConnected
             ? "Connected"
