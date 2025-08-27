@@ -1,6 +1,6 @@
 import InRound from "../components/room/inRound/InRound";
 import Lobby from "../components/room/lobby/Lobby";
-import Reveal from "../components/room/Reveal";
+import Reveal from "../components/room/reveal/Reveal";
 import Summary from "../components/room/Summary";
 import useGameStore from "../stores/gameStore";
 
