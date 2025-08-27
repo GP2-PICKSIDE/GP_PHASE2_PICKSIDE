@@ -1,4 +1,7 @@
+import useGameStore from "../../../stores/gameStore";
+
 const HostSettingCard = () => {
+  const { isHost } = useGameStore();
   return (
     <div className="w-full bg-white shadow-xl px-8 md:px-16 py-12 flex flex-col gap-8 rounded-xl">
       <p className="font-semibold text-2xl">Room Settings</p>
@@ -11,6 +14,7 @@ const HostSettingCard = () => {
           <select
             id="theme"
             className="w-full rounded-lg p-3 border border-gray-400"
+            disabled={!isHost ? true : false}
           ></select>
         </div>
 
@@ -20,6 +24,7 @@ const HostSettingCard = () => {
           </label>
           <select
             id="language"
+            disabled={!isHost ? true : false}
             className="w-full rounded-lg p-3 border border-gray-400"
           ></select>
         </div>
@@ -31,6 +36,7 @@ const HostSettingCard = () => {
           <input
             type="number"
             id="roomName"
+            disabled={!isHost ? true : false}
             className="w-full rounded-lg p-3 border border-gray-400"
             placeholder="5"
           />
