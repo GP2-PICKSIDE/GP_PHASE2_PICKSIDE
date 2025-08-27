@@ -10,13 +10,11 @@ const useGameStore = create(
     code: null,
     roomName: "",
     isHost: false,
-
     settings: { theme: "funny", lang: "id", rounds: 5 },
 
     gameState: "in_round",
     players: [],
     roundIndex: 0,
-    totalRounds: 0,
     deadline: null,
     question: null,
     history: [],

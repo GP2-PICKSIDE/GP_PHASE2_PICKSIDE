@@ -40,9 +40,12 @@ const MainPage = () => {
               click the button below to start the game
             </span>
           </div>
-          <button className="bg-amber-200 rounded-lg px-8 py-3 text-lg font-semibold shadow hover:bg-amber-300 transition">
-            <Link to="/play">Start</Link>
-          </button>
+          <Link
+            to="/play"
+            className="bg-amber-200 rounded-lg px-8 py-3 text-lg font-semibold shadow hover:bg-amber-300 transition"
+          >
+            Start
+          </Link>
         </div>
       </div>
     </>

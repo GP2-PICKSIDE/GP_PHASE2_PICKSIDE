@@ -7,6 +7,7 @@ import useGameStore from "./gameStore";
 const useSocketStore = create(
   immer((set, get) => ({
     socketState: undefined,
+    error: undefined,
 
     internalSocketConnect: () => {
       const socketInitializer = io(BASE_URL);
@@ -32,6 +33,13 @@ const useSocketStore = create(
           me: { ...state.me, id: socketInitializer.id },
         }));
       }),
+        socketInitializer.on("room:error", (err) => {
+          useGameStore.setState((state) => ({
+            ...state,
+            error: err?.message || "ROOM_ERROR",
+          }));
+
+        }),
         set((state) => {
           state.socketState = socketInitializer;
         });
