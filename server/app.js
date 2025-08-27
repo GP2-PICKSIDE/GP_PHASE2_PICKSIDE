@@ -22,6 +22,7 @@ const io = new Server(httpServer, {
   cors: { origin: "*" },
 });
 
+// room container
 const rooms = new Map();
 
 io.on("connection", (socket) => {
@@ -68,6 +69,28 @@ io.on("connection", (socket) => {
     );
   });
 
+  socket.on("room:join", ({ code, name }) => {
+    code = (code || "").toUpperCase();
+    const room = rooms.get(code);
+    if (!room) return socket.emit("room:error", { message: "ROOM_NOT_FOUND" });
+
+    room.players[socket.id] = { id: socket.id, name, connected: true };
+    socket.data.roomCode = code;
+    socket.join(code);
+
+    io.to(code).emit("room:state", {
+      code,
+      gameState: room.gameState,
+      settings: room.settings,
+      players: Object.values(room.players),
+      roundIndex: room.roundIndex,
+      totalRounds: room.settings.rounds,
+      hostId: room.hostId,
+    });
+
+    console.log(`${name} joined room with code ${code}`);
+  });
+
   socket.on("generate_question", async ({ roomCode, theme, lang }) => {
     const questionData = await generateAi(theme, lang);
     io.to(roomCode).emit("new_question", questionData);
@@ -75,6 +98,35 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("user disconnected:", socket.id);
+
+    const code = socket.data.roomCode;
+    const room = rooms.get(code);
+    if (!room) return;
+
+    // hapus player
+    delete room.players[socket.id];
+
+    // host yang keluar → promosikan host baru (jika ada)
+    if (room.hostId === socket.id) {
+      const ids = Object.keys(room.players);
+      room.hostId = ids[0] || null;
+    }
+
+    // kosong → hapus room dan selesai
+    if (Object.keys(room.players).length === 0) {
+      rooms.delete(code);
+      return;
+    }
+
+    io.to(code).emit("room:state", {
+      code,
+      gameState: room.gameState,
+      settings: room.settings,
+      players: Object.values(room.players),
+      roundIndex: room.roundIndex,
+      totalRounds: room.settings.rounds,
+      hostId: room.hostId,
+    });
   });
 });
 
