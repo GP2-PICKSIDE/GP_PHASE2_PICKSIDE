@@ -118,7 +118,7 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("room:start", ({ code, totalRounds, theme, lang }) => {
+  socket.on("room:start", ({ code, settings }) => {
     code = (code || "").toUpperCase();
     const room = rooms.get(code);
     if (!room) return socket.emit("room:error", { message: "Room not found" });
@@ -127,7 +127,7 @@ io.on("connection", (socket) => {
       code,
       gameState: "in_round",
       roomName: room.roomName,
-      settings: { theme, lang, rounds: totalRounds },
+      settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
@@ -168,7 +168,6 @@ io.on("connection", (socket) => {
       settings: room.settings,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
-      totalRounds: room.settings.rounds,
       hostId: room.hostId,
     });
   });

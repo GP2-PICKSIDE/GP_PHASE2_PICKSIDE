@@ -3,10 +3,11 @@ import AnswerCard from "./AnswerCard";
 import axios from "axios";
 import { BASE_URL } from "../../../utils/constant";
 import { useState, useEffect } from "react";
+import useGameStore from "../../../stores/gameStore";
 
 const InRound = () => {
-  const [theme] = useState("");
-  const [lang] = useState("id");
+  const { players = [], settings } = useGameStore();
+
   const [question, setQuestion] = useState(null);
   const [options, setOptions] = useState([]);
 
@@ -14,8 +15,8 @@ const InRound = () => {
     const generateQuestion = async () => {
       try {
         const { data } = await axios.post(`${BASE_URL}/generateAi`, {
-          theme,
-          lang,
+          theme: settings?.theme,
+          lang: settings?.lang,
         });
 
         setQuestion(data.question);
@@ -25,7 +26,7 @@ const InRound = () => {
       }
     };
     generateQuestion();
-  }, [lang, theme]);
+  }, [settings]);
 
   return (
     <>
@@ -41,17 +42,17 @@ const InRound = () => {
 
       {/* PlayerAvatar -> initials */}
       <div className="flex gap-4 flex-wrap">
-        {/* use case voted */}
-        <div>
-          <span className="bg-secondary rounded-full text-white p-4 border-4 border-green-500">
-            {initials("tes halo")}
-          </span>
-        </div>
-        <div>
-          <span className="bg-secondary rounded-full text-white p-4">
-            {initials("tes halo")}
-          </span>
-        </div>
+        {players.map((player) => (
+          <div
+            key={player.id}
+            className={`flex items-center justify-center rounded-full shrink-0
+                      h-10 w-10 md:h-12 md:w-12 bg-secondary ring-1 ring-inset ring-secondary`}
+          >
+            <span className="font-semibold text-sm md:text-base select-none text-white">
+              {initials(player.name || "")}
+            </span>
+          </div>
+        ))}
       </div>
     </>
   );

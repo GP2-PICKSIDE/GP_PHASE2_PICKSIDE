@@ -57,6 +57,17 @@ const useGameStore = create(
         name: name.trim(),
       });
     },
+
+    FnStartRoom: () => {
+      const { socketState } = useSocketStore.getState();
+      const { code, settings } = useGameStore.getState();
+
+      if (!socketState?.connected) {
+        throw new Error("SOCKET_DISCONNECTED");
+      }
+
+      socketState.emit("room:start", { code, settings });
+    },
   }))
 );
 
