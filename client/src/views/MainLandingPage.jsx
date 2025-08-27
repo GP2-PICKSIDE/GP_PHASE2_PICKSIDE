@@ -31,8 +31,7 @@ const MainPage = () => {
         <div className="flex flex-col items-center gap-4">
           <div
             ref={textRef}
-            className="flex flex-col items-center gap-5 text-center"
-          >
+            className="flex flex-col items-center gap-5 text-center">
             <img src={pickside} alt="logo" />
             <span className="text-4xl font-semibold font-stretch-50% text-black drop-shadow">
               ready to pick your side?
@@ -42,7 +41,7 @@ const MainPage = () => {
             </span>
           </div>
           <button className="bg-amber-200 rounded-lg px-8 py-3 text-lg font-semibold shadow hover:bg-amber-300 transition">
-            <Link to="/home">Start</Link>
+            <Link to="/play">Start</Link>
           </button>
         </div>
       </div>

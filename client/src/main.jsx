@@ -12,19 +12,17 @@ import MainPage from "./views/MainLandingPage";
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
-
   // <StrictMode>
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <Routes>
-     <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<MainPage />} />
         <Route element={<RootLayout />}>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/play" element={<HomePage />} />
           <Route path="/room" element={<RoomPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
   </QueryClientProvider>
   // </StrictMode>
-
 );

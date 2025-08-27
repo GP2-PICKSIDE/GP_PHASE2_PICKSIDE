@@ -5,8 +5,8 @@ import { BASE_URL } from "../../../utils/constant";
 import { useState, useEffect } from "react";
 
 const InRound = () => {
-  const [theme, setTheme] = useState("");
-  const [lang, setLang] = useState("id");
+  const [theme] = useState("");
+  const [lang] = useState("id");
   const [question, setQuestion] = useState(null);
   const [options, setOptions] = useState([]);
 
