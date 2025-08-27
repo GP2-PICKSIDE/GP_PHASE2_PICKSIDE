@@ -22,12 +22,13 @@ const useSocketStore = create(
           players: room.players,
           settings: room.settings,
           roundIndex: room.roundIndex,
+          totalRounds: room.totalRounds,
           deadline: room.deadline,
           question: room.question,
           isHost: room.hostId
             ? room.hostId === socketInitializer.id
             : state.isHost,
-          me: socketInitializer.id,
+          me: { ...state.me, id: socketInitializer.id },
         }));
 
         console.log(`Room with code ${useGameStore.getState().code} created`);

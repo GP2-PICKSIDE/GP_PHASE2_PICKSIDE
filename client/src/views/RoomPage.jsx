@@ -6,6 +6,7 @@ import useGameStore from "../stores/gameStore";
 
 const RoomPage = () => {
   const { roomName, code, gameState } = useGameStore();
+
   console.log(gameState);
 
   return (
