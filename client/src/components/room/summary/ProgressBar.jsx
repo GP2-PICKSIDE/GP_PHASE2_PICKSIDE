@@ -5,46 +5,69 @@ const ProgressBar = ({
   bLabel = "Option B",
   aVotes = 0,
   bVotes = 0,
+  variant = "overall",
 }) => {
-  const safeA = Math.max(0, Math.min(100, Number(aPct) || 0));
-  const safeB = Math.max(0, Math.min(100, Number(bPct) || 0));
-  const showInsideLabel = (pct) => pct >= 14; // agar label tidak kepotong
+  const clamp = (n) => Math.max(0, Math.min(100, Number(n) || 0));
+  const A = clamp(aPct);
+  const B = clamp(bPct);
+
+  const TopLabels = () => (
+    <div className="flex justify-between text-sm font-medium mb-1">
+      <span className="text-gray-800 truncate max-w-[48%]" title={aLabel}>
+        {aLabel}
+      </span>
+      <span className="text-gray-800 truncate max-w-[48%] text-right" title={bLabel}>
+        {bLabel}
+      </span>
+    </div>
+  );
 
   return (
     <div className="w-full">
-      {/* Top labels */}
-      <div className="flex justify-between text-sm font-medium mb-1">
-        <span className="text-gray-700">{aLabel}</span>
-        <span className="text-gray-700">{bLabel}</span>
+      <TopLabels />
+
+      {/* Track */}
+      <div
+        className="w-full h-5 rounded-full overflow-hidden flex bg-gray-200"
+        role="img"
+        aria-label={`${aLabel} ${A}%, ${bLabel} ${B}%`}
+        title={`${aLabel} ${A}%, ${bLabel} ${B}%`}
+      >
+        {variant === "overall" ? (
+          <>
+            <div
+              className="h-full flex items-center justify-center text-white text-xs transition-[width] duration-600 ease-out bg-gradient-to-r from-primary to-primary/80"
+              style={{ width: `${A}%` }}
+            >
+              {A >= 14 && <span className="px-2">{A}%</span>}
+            </div>
+            <div
+              className="h-full flex items-center justify-center text-white text-xs transition-[width] duration-600 ease-out bg-gradient-to-r from-secondary to-secondary/80"
+              style={{ width: `${B}%` }}
+            >
+              {B >= 14 && <span className="px-2">{B}%</span>}
+            </div>
+          </>
+        ) : (
+          <div
+            className={`h-full flex items-center justify-center text-white text-xs transition-[width] duration-600 ease-out ${
+              variant === "roundA" ? "bg-primary" : "bg-secondary"
+            }`}
+            style={{ width: `${variant === "roundA" ? A : B}%` }}
+          >
+            {(variant === "roundA" ? A : B) >= 14 && (
+              <span className="px-2">{variant === "roundA" ? `${A}%` : `${B}%`}</span>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Split progress bar */}
-      <div className="w-full h-5 rounded-full overflow-hidden flex bg-gray-100">
-        <div
-          className="h-full flex items-center justify-center bg-primary text-white text-xs"
-          style={{ width: `${safeA}%` }}
-        >
-          {showInsideLabel(safeA) && <span className="px-2">{safeA}%</span>}
-        </div>
-        <div
-          className="h-full flex items-center justify-center bg-secondary text-white text-xs"
-          style={{ width: `${safeB}%` }}
-        >
-          {showInsideLabel(safeB) && <span className="px-2">{safeB}%</span>}
-        </div>
-      </div>
-
-      {/* Bottom meta */}
-      <div className="flex justify-between text-xs text-gray-500 mt-1">
-        <span>
-          {aVotes} vote{aVotes === 1 ? "" : "s"}
-        </span>
-        <span>
-          {bVotes} vote{bVotes === 1 ? "" : "s"}
-        </span>
+      <div className="flex justify-between text-xs text-gray-600 mt-1">
+        <span>{aVotes} vote{aVotes === 1 ? "" : "s"}</span>
+        <span>{bVotes} vote{bVotes === 1 ? "" : "s"}</span>
       </div>
     </div>
   );
 };
 
-export default ProgressBar
+export default ProgressBar;

@@ -33,14 +33,13 @@ const InRound = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 text-2xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 text-2xl items-stretch">
         <AnswerCard choose="A" option={options[0]} disabled={hasVoted} />
         <AnswerCard choose="B" option={options[1]} disabled={hasVoted} />
       </div>
 
       {/* PlayerAvatar -> initials, border hijau -> sudah vote */}
       <div className="flex gap-4 flex-wrap">
-
         {players.map((player) => {
           const voted = !!question?.votes?.[player.id];
           return (
