@@ -242,6 +242,8 @@ io.on("connection", (socket) => {
       gameState: room.gameState,
       roomName: room.roomName,
       settings: room.settings,
+      question: room.question,
+      deadline: room.deadline,
       players: Object.values(room.players),
       roundIndex: room.roundIndex,
       hostId: room.hostId,
