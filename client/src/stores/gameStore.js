@@ -23,8 +23,8 @@ const useGameStore = create(
       const { displayName: name, roomName } = useAllStore.getState();
       const { socketState } = useSocketStore.getState();
 
-      if (name.length < 2) throw new Error("INVALID_NAME");
-      if (roomName.length < 2) throw new Error("INVALID_ROOM_NAME");
+      if (name.length < 2) throw "Invalid name";
+      if (roomName.length < 2) throw "Invalid room name";
 
       set((state) => {
         state.me.id = socketState.id;
@@ -43,8 +43,8 @@ const useGameStore = create(
       const { displayName: name, roomCode } = useAllStore.getState();
       const { socketState } = useSocketStore.getState();
 
-      if (name.length < 2) throw new Error("INVALID_NAME");
-      if (roomCode.length < 2) throw new Error("INVALID_ROOM_CODE");
+      if (name.length < 2) throw "Invalid name";
+      if (roomCode.length < 2) throw "Invalid room code";
 
       set((state) => {
         state.me.id = socketState.id;
@@ -63,7 +63,7 @@ const useGameStore = create(
       const { code, settings } = useGameStore.getState();
 
       if (!socketState?.connected) {
-        throw new Error("SOCKET_DISCONNECTED");
+        throw "You are disconnected";
       }
 
       socketState.emit("room:start", { code, settings });

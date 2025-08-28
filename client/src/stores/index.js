@@ -8,6 +8,7 @@ const useAllStore = create(
     displayName: "",
     roomName: "",
     roomCode: "",
+    globalLang: "id",
 
     setDisplayName: (value) => {
       set((state) => {
@@ -56,6 +57,12 @@ const useAllStore = create(
       useGameStore.setState({ settings: next });
 
       socketState.emit("room:settings", { code, ...next });
+    },
+
+    setGlobalLang: (value) => {
+      set((state) => {
+        state.globalLang = value;
+      });
     },
   }))
 );

@@ -71,7 +71,7 @@ const InRound = () => {
           {lang === "en"
             ? en.inRound.roundInfo.split("•")[1]
             : id.inRound.roundInfo.split("•")[1]}{" "}
-          <b>{secs} detik</b>
+          <b>{secs}</b>
         </div>
 
         {/* progress bar */}
@@ -114,7 +114,8 @@ const InRound = () => {
                 rings[idx % rings.length],
                 voted ? "ring-4 ring-emerald-400" : "ring-2 ring-white/50",
               ].join(" ")}
-              title={player.name || ""}>
+              title={player.name || ""}
+            >
               <span className="font-semibold text-sm md:text-base select-none">
                 {initials(player.name || "")}
               </span>
@@ -126,7 +127,8 @@ const InRound = () => {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    strokeWidth={3}>
+                    strokeWidth={3}
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"

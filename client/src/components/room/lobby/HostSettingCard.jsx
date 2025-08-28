@@ -14,7 +14,32 @@ const HostSettingCard = () => {
   const { socketState } = useSocketStore();
   const { lang } = useContext(LanguageContext);
 
-  const themes = ["funny", "life", "food", "friends", "travel"];
+  const idThemes = [
+    "lucu",
+    "kehidupan",
+    "makanan",
+    "persahabatan",
+    "perjalanan",
+    "teknologi",
+    "olahraga",
+    "musik",
+    "film",
+    "pekerjaan",
+  ];
+
+  const enThemes = [
+    "funny",
+    "life",
+    "food",
+    "friends",
+    "travel",
+    "technology",
+    "sports",
+    "music",
+    "movies",
+    "work",
+  ];
+  const themes = lang === "en" ? enThemes : idThemes;
 
   const [isStarting, setIsStarting] = useState(false);
   const disabled = !isHost || isStarting;
@@ -60,7 +85,8 @@ const HostSettingCard = () => {
               className={baseInput}
               onChange={(e) => setRoomTheme(e.target.value)}
               value={settings?.theme}
-              disabled={disabled}>
+              disabled={disabled}
+            >
               {themes.map((theme) => (
                 <option key={theme} value={theme}>
                   {theme.charAt(0).toUpperCase() + theme.slice(1)}
@@ -83,7 +109,8 @@ const HostSettingCard = () => {
               value={settings?.lang}
               onChange={(e) => setRoomLang(e.target.value)}
               className={baseInput}
-              disabled={disabled}>
+              disabled={disabled}
+            >
               <option value="en">English</option>
               <option value="id">Indonesia</option>
             </select>
@@ -128,7 +155,8 @@ const HostSettingCard = () => {
                 disabled
                   ? "bg-indigo-300 cursor-not-allowed"
                   : "bg-gradient-to-r from-indigo-600 to-pink-600 hover:scale-[1.02] hover:shadow-lg"
-              }`}>
+              }`}
+          >
             {isStarting
               ? lang === "en"
                 ? en.hostSettings.buttonStarting

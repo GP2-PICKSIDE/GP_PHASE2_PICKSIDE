@@ -7,9 +7,11 @@ import RootLayout from "./layouts/RootLayout";
 import RoomPage from "./views/RoomPage";
 import MainPage from "./views/MainLandingPage";
 import { LanguageProvider } from "./contexts/context";
+import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
+    <ToastContainer />
     <LanguageProvider>
       <Routes>
         <Route path="/" element={<MainPage />} />
