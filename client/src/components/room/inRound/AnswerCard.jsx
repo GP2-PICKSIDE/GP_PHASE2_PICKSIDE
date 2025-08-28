@@ -1,16 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
 import useGameStore from "../../../stores/gameStore";
 
 const AnswerCard = ({ choose, option, disabled }) => {
   const { FnVote } = useGameStore();
 
-  const { mutate } = useMutation({
-    mutationKey: ["vote"],
-    mutationFn: (choice) => FnVote(choice),
-  });
-
   const isA = choose === "A";
-  const headBg = isA ? "from-indigo-500 to-blue-500" : "from-violet-500 to-fuchsia-500";
+  const headBg = isA
+    ? "from-indigo-500 to-blue-500"
+    : "from-violet-500 to-fuchsia-500";
   const bodyGrad = isA
     ? "from-indigo-50/60 to-indigo-100/40"
     : "from-violet-50/60 to-fuchsia-100/40";
@@ -36,7 +32,8 @@ const AnswerCard = ({ choose, option, disabled }) => {
             className={[
               "rounded-full w-14 h-14 text-2xl text-white",
               "grid place-items-center font-bold",
-              "bg-gradient-to-br", headBg,
+              "bg-gradient-to-br",
+              headBg,
             ].join(" ")}
           >
             {choose}
@@ -56,21 +53,27 @@ const AnswerCard = ({ choose, option, disabled }) => {
       <div className="h-px w-full bg-black/5" />
 
       {/* Body + CTA selalu di bawah */}
-      <div className={["px-8 md:px-16 py-8 flex-1 flex flex-col justify-end bg-gradient-to-b", bodyGrad].join(" ")}>
+      <div
+        className={[
+          "px-8 md:px-16 py-8 flex-1 flex flex-col justify-end bg-gradient-to-b",
+          bodyGrad,
+        ].join(" ")}
+      >
         <p className="text-sm text-gray-500 text-center mb-3">
           Tap to choose {choose}
         </p>
 
         <button
           type="button"
-          onClick={() => mutate(choose)}
+          onClick={async () => await FnVote(choose)}
           disabled={disabled || isLoading}
           className={[
             "w-full rounded-lg px-6 py-3 text-white font-semibold",
             "bg-gradient-to-r transition-all duration-150",
             "focus:outline-none focus:ring-2 focus:ring-black/10",
             "active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed",
-            "cursor-pointer", btnGrad,
+            "cursor-pointer",
+            btnGrad,
           ].join(" ")}
           aria-label={`Choose option ${choose}`}
         >

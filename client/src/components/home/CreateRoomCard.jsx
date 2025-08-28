@@ -1,4 +1,3 @@
-import { useMutation } from "@tanstack/react-query";
 import useAllStore from "../../stores";
 import useGameStore from "../../stores/gameStore";
 import { useNavigate } from "react-router";
@@ -8,17 +7,21 @@ const CreateRoomcard = () => {
   const { FnCreateRoom } = useGameStore();
   const { displayName, roomName, setDisplayName, setRoomName } = useAllStore();
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["createRoom"],
-    mutationFn: FnCreateRoom,
-    onSuccess: () => navigate("/room"),
-  });
+  const handleCreateRoom = async (e) => {
+    try {
+      e.preventDefault();
 
-  const disabled = isPending;
+      await FnCreateRoom();
+
+      navigate("/room");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const baseInput =
     "w-full rounded-lg pl-10 pr-3 py-3 border bg-white/70 backdrop-blur-md text-gray-900 " +
-    "border-black/10 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition " +
-    (disabled ? "opacity-60 cursor-not-allowed" : "");
+    "border-black/10 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition ";
 
   return (
     <section className="relative w-full rounded-2xl bg-white/50 backdrop-blur-xl border border-black/5 shadow-lg overflow-hidden hover:shadow-2xl transition">
@@ -26,14 +29,7 @@ const CreateRoomcard = () => {
       <div className="px-8 md:px-10 py-8 flex flex-col gap-6">
         <h2 className="text-2xl font-bold text-gray-800">🚀 Create Room</h2>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (!disabled) mutate();
-          }}
-          className="flex flex-col gap-4"
-          aria-busy={isPending}
-        >
+        <form onSubmit={handleCreateRoom} className="flex flex-col gap-4">
           {/* Display name */}
           <div className="flex flex-col gap-2">
             <label
@@ -60,7 +56,6 @@ const CreateRoomcard = () => {
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Your name"
                 className={baseInput}
-                disabled={disabled}
               />
             </div>
           </div>
@@ -90,22 +85,15 @@ const CreateRoomcard = () => {
                 onChange={(e) => setRoomName(e.target.value)}
                 placeholder="Room name"
                 className={baseInput}
-                disabled={disabled}
               />
             </div>
           </div>
 
           <button
             type="submit"
-            disabled={disabled}
-            className={`w-full rounded-lg px-6 py-3 font-semibold text-white transition transform cursor-pointer
-              ${
-                disabled
-                  ? "bg-indigo-400 cursor-not-allowed"
-                  : "bg-indigo-600 hover:bg-indigo-700 hover:scale-[1.02]"
-              }`}
+            className={`w-full rounded-lg px-6 py-3 font-semibold text-white transition transform cursor-pointer bg-primary`}
           >
-            {isPending ? "Creating…" : "Create Room"}
+            Create Room
           </button>
 
           <p className="text-center text-gray-500 text-sm">
