@@ -2,9 +2,15 @@ import { useEffect, useMemo, useState } from "react";
 import ResultCard from "./ResultCard";
 import useGameStore from "../../../stores/gameStore";
 
+import en from "../../../i18n/en.json";
+import id from "../../../i18n/id.json";
+import { LanguageContext } from "../../../contexts/context";
+import { useContext } from "react";
+
 const Reveal = () => {
   const { reveal, players = [] } = useGameStore();
   const nextAt = reveal?.nextAt || 0;
+  const { lang } = useContext(LanguageContext);
 
   // countdown
   const [left, setLeft] = useState(0);
@@ -31,8 +37,12 @@ const Reveal = () => {
   const bPct = total === 0 ? 0 : 100 - aPct;
 
   const allVoters = Array.isArray(reveal?.voters) ? reveal.voters : [];
-  const votersA = allVoters.filter((v) => String(v.choice).toUpperCase() === "A");
-  const votersB = allVoters.filter((v) => String(v.choice).toUpperCase() === "B");
+  const votersA = allVoters.filter(
+    (v) => String(v.choice).toUpperCase() === "A"
+  );
+  const votersB = allVoters.filter(
+    (v) => String(v.choice).toUpperCase() === "B"
+  );
 
   const isTie = aPct === bPct && total > 0;
 
@@ -40,9 +50,12 @@ const Reveal = () => {
     <div className="w-full flex flex-col items-center gap-8">
       {/* header + next round bar */}
       <div className="w-full max-w-3xl mx-auto text-center">
-        <h1 className="text-2xl md:text-4xl font-extrabold text-gray-700">Results</h1>
+        <h1 className="text-2xl md:text-4xl font-extrabold text-gray-700">
+          {lang === "en" ? en.reveal.results : id.reveal.results}
+        </h1>
         <p className="text-gray-500 mt-1">
-          Next round starting… <b>{secs}</b>
+          {lang === "en" ? en.reveal.nextRound : id.reveal.nextRound}{" "}
+          <b>{secs}</b>
         </p>
         <div className="mt-3 h-2 w-full rounded-full bg-black/5 overflow-hidden">
           <div
@@ -50,7 +63,11 @@ const Reveal = () => {
             style={{ width: `${progress * 100}%` }}
           />
         </div>
-        {isTie && <p className="mt-2 text-xs text-amber-600">It's a tie! 🎯</p>}
+        {isTie && (
+          <p className="mt-2 text-xs text-amber-600">
+            {lang === "en" ? en.reveal.tie : id.reveal.tie}
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full lg:px-32 items-stretch">

@@ -1,3 +1,8 @@
+import { useContext } from "react";
+import { LanguageContext } from "../../../contexts/context"; // sesuaikan path context kamu
+import en from "../../../i18n/en.json";
+import id from "../../../i18n/id.json";
+
 const ProgressBar = ({
   aPct = 0,
   bPct = 0,
@@ -10,13 +15,16 @@ const ProgressBar = ({
   const clamp = (n) => Math.max(0, Math.min(100, Number(n) || 0));
   const A = clamp(aPct);
   const B = clamp(bPct);
+  const { lang } = useContext(LanguageContext);
 
   const TopLabels = () => (
     <div className="flex justify-between text-sm font-medium mb-1">
       <span className="text-gray-800 truncate max-w-[48%]" title={aLabel}>
         {aLabel}
       </span>
-      <span className="text-gray-800 truncate max-w-[48%] text-right" title={bLabel}>
+      <span
+        className="text-gray-800 truncate max-w-[48%] text-right"
+        title={bLabel}>
         {bLabel}
       </span>
     </div>
@@ -26,8 +34,7 @@ const ProgressBar = ({
     <span
       className={`absolute -top-6 text-xs font-semibold text-gray-700 ${
         side === "left" ? "left-0" : "right-0"
-      }`}
-    >
+      }`}>
       {value}%
     </span>
   );
@@ -41,20 +48,17 @@ const ProgressBar = ({
         className="relative w-full h-5 rounded-full overflow-hidden flex bg-gray-200"
         role="img"
         aria-label={`${aLabel} ${A}%, ${bLabel} ${B}%`}
-        title={`${aLabel} ${A}%, ${bLabel} ${B}%`}
-      >
+        title={`${aLabel} ${A}%, ${bLabel} ${B}%`}>
         {variant === "overall" ? (
           <>
             <div
               className="h-full flex items-center justify-center text-white text-xs transition-[width] duration-500 ease-out bg-gradient-to-r from-indigo-600 to-indigo-500"
-              style={{ width: `${A}%` }}
-            >
+              style={{ width: `${A}%` }}>
               {A >= 14 && <span className="px-2">{A}%</span>}
             </div>
             <div
               className="h-full flex items-center justify-center text-white text-xs transition-[width] duration-500 ease-out bg-gradient-to-r from-violet-600 to-fuchsia-500"
-              style={{ width: `${B}%` }}
-            >
+              style={{ width: `${B}%` }}>
               {B >= 14 && <span className="px-2">{B}%</span>}
             </div>
 
@@ -66,9 +70,7 @@ const ProgressBar = ({
           <>
             <div
               className={`h-full transition-[width] duration-500 ease-out ${
-                variant === "roundA"
-                  ? "bg-indigo-600"
-                  : "bg-violet-600"
+                variant === "roundA" ? "bg-indigo-600" : "bg-violet-600"
               }`}
               style={{ width: `${variant === "roundA" ? A : B}%` }}
             />
@@ -90,10 +92,12 @@ const ProgressBar = ({
 
       <div className="flex justify-between text-xs text-gray-600 mt-1">
         <span>
-          {aVotes} vote{aVotes === 1 ? "" : "s"}
+          {aVotes} {lang === "en" ? en.progressBar.votes : id.progressBar.votes}
+          {aVotes === 1}
         </span>
         <span>
-          {bVotes} vote{bVotes === 1 ? "" : "s"}
+          {bVotes} {lang === "en" ? en.progressBar.votes : id.progressBar.votes}
+          {bVotes === 1}
         </span>
       </div>
     </div>

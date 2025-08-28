@@ -1,7 +1,13 @@
 import useGameStore from "../../../stores/gameStore";
 
+import en from "../../../i18n/en.json";
+import id from "../../../i18n/id.json";
+import { LanguageContext } from "../../../contexts/context";
+import { useContext } from "react";
+
 const AnswerCard = ({ choose, option, disabled }) => {
   const { FnVote } = useGameStore();
+  const { lang } = useContext(LanguageContext);
 
   const isA = choose === "A";
   const headBg = isA
@@ -23,8 +29,7 @@ const AnswerCard = ({ choose, option, disabled }) => {
         "bg-white/70 backdrop-blur-xl shadow-lg hover:shadow-2xl",
         "transition-transform duration-200 hover:-translate-y-0.5",
         disabled ? "opacity-90" : "",
-      ].join(" ")}
-    >
+      ].join(" ")}>
       {/* Header */}
       <div className="px-8 pt-8 pb-4 flex flex-col items-center gap-4">
         <span className="relative">
@@ -34,8 +39,7 @@ const AnswerCard = ({ choose, option, disabled }) => {
               "grid place-items-center font-bold",
               "bg-gradient-to-br",
               headBg,
-            ].join(" ")}
-          >
+            ].join(" ")}>
             {choose}
           </span>
           <span className="absolute inset-0 rounded-full ring-4 ring-black/5 pointer-events-none" />
@@ -57,10 +61,12 @@ const AnswerCard = ({ choose, option, disabled }) => {
         className={[
           "px-8 md:px-16 py-8 flex-1 flex flex-col justify-end bg-gradient-to-b",
           bodyGrad,
-        ].join(" ")}
-      >
+        ].join(" ")}>
         <p className="text-sm text-gray-500 text-center mb-3">
-          Tap to choose {choose}
+          {lang === "en"
+            ? en.answerCard.tapToChoose
+            : id.answerCard.tapToChoose}{" "}
+          {choose}
         </p>
 
         <button
@@ -75,9 +81,8 @@ const AnswerCard = ({ choose, option, disabled }) => {
             "cursor-pointer",
             btnGrad,
           ].join(" ")}
-          aria-label={`Choose option ${choose}`}
-        >
-          Choose {choose}
+          aria-label={`Choose option ${choose}`}>
+          {lang === "en" ? en.answerCard.choose : id.answerCard.choose} {choose}
         </button>
       </div>
     </div>

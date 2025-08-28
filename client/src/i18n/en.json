@@ -55,43 +55,45 @@
   },
   "inRound": {
     "wouldYouRather": "Would you rather...",
-    "roundInfo": "Round {round} • Time left: {time}s"
+    "roundInfo": "Round • Time left:"
   },
   "answerCard": {
-    "choose": "Choose {option}",
-    "tapToChoose": "Tap to choose {option}",
+    "choose": "Choose",
+    "tapToChoose": "Tap to choose",
     "loading": "Loading..."
   },
   "reveal": {
     "results": "Results",
-    "nextRound": "Next round starting… {time}",
+    "nextRound": "Next round starting…",
     "tie": "It's a tie! 🎯"
   },
   "resultCard": {
     "winner": "Winner",
-    "votes": "{count} {count, plural, one {vote} other {votes}}",
+    "votes": "vote",
     "noVoters": "No voters"
   },
   "progressBar": {
     "optionA": "Option A",
     "optionB": "Option B",
     "ariaLabel": "{aLabel} {aPct}%, {bLabel} {bPct}%",
-    "votes": "{count} {count, plural, one {vote} other {votes}}"
+    "votes": "votes"
   },
   "summary": {
     "title": "Game Summary",
-    "roundsPlayed": "Completed {count} {count, plural, one {round} other {rounds}}.",
+    "roundsPlayed": "Completed",
+    "round": "round",
     "noRounds": "No rounds played.",
     "overall": "Overall",
     "leader": "Leader: {side}",
     "tie": "Tie",
-    "roundsInfo": "Rounds played: {played} of {total}",
+    "roundsInfo": "Rounds played: ",
+    "roundSpace": "of",
     "overallResultTie": "Overall result: tie.",
-    "overallLeaderA": "Overall leader: A (+{diff}%)",
-    "overallLeaderB": "Overall leader: B (+{diff}%)",
+    "overallLeaderA": "Overall leader: A",
+    "overallLeaderB": "Overall leader: B",
     "topVoted": "Top voted questions",
     "noData": "No data yet",
-    "playersParticipated": "Players participated: {count}",
+    "playersParticipated": "Players participated:",
     "playAgain": "Play again",
     "backHome": "Back to Home",
     "noRoundsToShow": "No rounds to show yet."

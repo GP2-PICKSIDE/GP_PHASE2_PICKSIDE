@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { initials } from "../../../utils/initialsName";
 
+import en from "../../../i18n/en.json";
+import id from "../../../i18n/id.json";
+import { LanguageContext } from "../../../contexts/context";
+import { useContext } from "react";
+
 const ResultCard = ({
   choose,
   label = "",
@@ -12,6 +17,7 @@ const ResultCard = ({
 }) => {
   const nameOf = (id) => players.find((x) => x.id === id)?.name || "?";
   const isA = choose === "A";
+  const { lang } = useContext(LanguageContext);
 
   // theming
   const headBg = isA
@@ -47,8 +53,7 @@ const ResultCard = ({
         isWinner
           ? "ring-4 ring-emerald-400/70 shadow-emerald-300/30"
           : "ring-0",
-      ].join(" ")}
-    >
+      ].join(" ")}>
       {/* header */}
       <div className="px-10 pt-10 pb-6 flex flex-col items-center gap-4 relative z-[1]">
         <div className="relative">
@@ -57,8 +62,7 @@ const ResultCard = ({
               "text-white w-12 h-12 rounded-full grid place-items-center text-2xl font-bold",
               "bg-gradient-to-br",
               headBg,
-            ].join(" ")}
-          >
+            ].join(" ")}>
             {choose}
           </span>
           <span className="absolute inset-0 rounded-full ring-4 ring-black/5" />
@@ -66,8 +70,7 @@ const ResultCard = ({
             <span
               className="absolute -right-3 -top-3 text-xl"
               title="Winner"
-              aria-label="Winner"
-            >
+              aria-label="Winner">
               🏆
             </span>
           )}
@@ -86,8 +89,7 @@ const ResultCard = ({
           "px-10 md:px-16 py-10 text-center flex-1 flex flex-col gap-6",
           "bg-gradient-to-b text-white relative z-[1]",
           bodyGrad,
-        ].join(" ")}
-      >
+        ].join(" ")}>
         <p className="text-5xl font-extrabold leading-none drop-shadow-sm">
           {shownPct}%
         </p>
@@ -98,8 +100,7 @@ const ResultCard = ({
             className="relative w-full h-5 rounded-full bg-white/30 shadow-[inset_0_1px_2px_rgba(0,0,0,.15)] overflow-hidden"
             role="img"
             aria-label={`Percentage bar showing ${target}% for option ${choose}`}
-            title={`${target}%`}
-          >
+            title={`${target}%`}>
             <div
               className="h-full bg-white/80"
               style={{
@@ -111,7 +112,12 @@ const ResultCard = ({
         </div>
 
         <p className="text-white/90 text-base md:text-lg">
-          {count} {count === 1 ? "vote" : "votes"}
+          {count}{" "}
+          {lang === "en"
+            ? count === 1
+              ? en.resultCard.votes
+              : `${en.resultCard.votes}s`
+            : id.resultCard.votes}
         </p>
 
         {/* voters */}
@@ -124,15 +130,16 @@ const ResultCard = ({
                   key={v.id}
                   className="inline-flex items-center justify-center rounded-full bg-white/25 text-white px-3 py-2 text-sm md:text-base font-medium"
                   title={nm}
-                  aria-label={nm}
-                >
+                  aria-label={nm}>
                   {initials(nm)}
                 </span>
               );
             })}
           </div>
         ) : (
-          <p className="text-white/80 text-sm">No voters</p>
+          <p className="text-white/80 text-sm">
+            {lang === "en" ? en.resultCard.noVoters : id.resultCard.noVoters}
+          </p>
         )}
       </div>
 
