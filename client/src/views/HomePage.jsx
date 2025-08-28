@@ -1,15 +1,21 @@
 import CreateRoomcard from "../components/home/CreateRoomCard";
 import JoinRoomCard from "../components/home/JoinRoomCard";
 
+import en from "../i18n/en.json";
+import id from "../i18n/id.json";
+import { LanguageContext } from "../contexts/context";
+import { useContext } from "react";
+
 const HomePage = () => {
+  const { lang } = useContext(LanguageContext);
   return (
     <div className="min-h-screen px-6 md:px-10 py-12 bg-gradient-to-br from-indigo-50 via-white to-pink-50">
       <header className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-800">
-          Create or Join a Room
+          {lang === "en" ? en.home.title : id.home.title}
         </h1>
         <p className="text-gray-500 mt-2 text-lg">
-          Challenge your friends with tough choices!
+          {lang === "en" ? en.home.subtitle : id.home.subtitle}
         </p>
       </header>
 
