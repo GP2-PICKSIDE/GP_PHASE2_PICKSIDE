@@ -3,10 +3,16 @@ import useAllStore from "../../../stores";
 import useGameStore from "../../../stores/gameStore";
 import useSocketStore from "../../../stores/socketStore";
 
+import en from "../../../i18n/en.json";
+import id from "../../../i18n/id.json";
+import { LanguageContext } from "../../../contexts/context";
+import { useContext } from "react";
+
 const HostSettingCard = () => {
   const { isHost, settings, FnStartRoom } = useGameStore();
   const { setRoomTheme, setRoomLang, setTotalRounds } = useAllStore();
   const { socketState } = useSocketStore();
+  const { lang } = useContext(LanguageContext);
 
   const themes = ["funny", "life", "food", "friends", "travel"];
 
@@ -39,14 +45,14 @@ const HostSettingCard = () => {
   return (
     <section className="w-full rounded-2xl bg-white/60 backdrop-blur-xl border border-black/5 shadow-lg px-8 md:px-12 py-10 transition hover:shadow-2xl">
       <h2 className="text-xl font-bold tracking-tight text-gray-900">
-        Room Settings
+        {lang === "en" ? en.hostSettings.title : id.hostSettings.title}
       </h2>
 
       <form onSubmit={handleStart} className="mt-6 flex flex-col gap-5">
         {/* Theme */}
         <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
           <label htmlFor="theme" className={labelCls}>
-            Theme
+            {lang === "en" ? en.hostSettings.theme : id.hostSettings.theme}
           </label>
           <div className="sm:col-span-2">
             <select
@@ -54,8 +60,7 @@ const HostSettingCard = () => {
               className={baseInput}
               onChange={(e) => setRoomTheme(e.target.value)}
               value={settings?.theme}
-              disabled={disabled}
-            >
+              disabled={disabled}>
               {themes.map((theme) => (
                 <option key={theme} value={theme}>
                   {theme.charAt(0).toUpperCase() + theme.slice(1)}
@@ -68,7 +73,9 @@ const HostSettingCard = () => {
         {/* Language */}
         <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
           <label htmlFor="language" className={labelCls}>
-            Language
+            {lang === "en"
+              ? en.hostSettings.language
+              : id.hostSettings.language}
           </label>
           <div className="sm:col-span-2">
             <select
@@ -76,8 +83,7 @@ const HostSettingCard = () => {
               value={settings?.lang}
               onChange={(e) => setRoomLang(e.target.value)}
               className={baseInput}
-              disabled={disabled}
-            >
+              disabled={disabled}>
               <option value="en">English</option>
               <option value="id">Indonesia</option>
             </select>
@@ -87,7 +93,7 @@ const HostSettingCard = () => {
         {/* Rounds */}
         <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
           <label htmlFor="totalRounds" className={labelCls}>
-            Rounds
+            {lang === "en" ? en.hostSettings.rounds : id.hostSettings.rounds}
           </label>
           <div className="sm:col-span-2">
             <input
@@ -99,7 +105,9 @@ const HostSettingCard = () => {
               max={10}
               disabled={disabled}
               className={baseInput}
-              placeholder="Rounds"
+              placeholder={
+                lang === "en" ? en.hostSettings.rounds : id.hostSettings.rounds
+              }
               inputMode="numeric"
             />
             <p className="mt-1 text-xs text-gray-500">Min 1 - Max 10</p>
@@ -116,12 +124,13 @@ const HostSettingCard = () => {
                 disabled
                   ? "bg-indigo-300 cursor-not-allowed"
                   : "bg-gradient-to-r from-indigo-600 to-pink-600 hover:scale-[1.02] hover:shadow-lg"
-              }`}
-          >
+              }`}>
             {isStarting ? "Starting…" : "Start Game"}
           </button>
           <p className="text-center text-gray-500 text-xs mt-2">
-            Settings are locked after the game starts.
+            {lang === "en"
+              ? en.hostSettings.lockedNote
+              : id.hostSettings.lockedNote}
           </p>
         </div>
       </form>

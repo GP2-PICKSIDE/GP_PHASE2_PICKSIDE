@@ -29,7 +29,7 @@
     "notFound": "Room not found"
   },
   "lobby": {
-    "title": "Room {roomName}",
+    "title": "Room",
     "copyCode": "Copy room code",
     "shareNote": "Share this code to invite friends 🚀"
   },

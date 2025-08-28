@@ -2,10 +2,16 @@ import useAllStore from "../../stores";
 import useGameStore from "../../stores/gameStore";
 import { useNavigate } from "react-router";
 
+import en from "../../i18n/en.json";
+import id from "../../i18n/id.json";
+import { LanguageContext } from "../../contexts/context";
+import { useContext } from "react";
+
 const CreateRoomcard = () => {
   const navigate = useNavigate();
   const { FnCreateRoom } = useGameStore();
   const { displayName, roomName, setDisplayName, setRoomName } = useAllStore();
+  const { lang } = useContext(LanguageContext);
 
   const handleCreateRoom = async (e) => {
     try {
@@ -27,7 +33,9 @@ const CreateRoomcard = () => {
     <section className="relative w-full rounded-2xl bg-white/50 backdrop-blur-xl border border-black/5 shadow-lg overflow-hidden hover:shadow-2xl transition">
       <div className="h-1 w-full bg-gradient-to-r from-indigo-500 to-pink-500" />
       <div className="px-8 md:px-10 py-8 flex flex-col gap-6">
-        <h2 className="text-2xl font-bold text-gray-800">🚀 Create Room </h2>
+        <h2 className="text-2xl font-bold text-gray-800">
+          {lang === "en" ? en.createRoom.title : id.createRoom.title}
+        </h2>
 
         <form onSubmit={handleCreateRoom} className="flex flex-col gap-4">
           {/* Display name */}
@@ -35,7 +43,10 @@ const CreateRoomcard = () => {
             <label
               htmlFor="displayName"
               className="text-sm text-gray-700 font-medium">
-              Display Name <span className="text-red-500">*</span>
+              {lang === "en"
+                ? en.createRoom.displayName
+                : id.createRoom.displayName}
+              <span className="text-red-500">*</span>
             </label>
 
             <div className="relative">
@@ -52,7 +63,11 @@ const CreateRoomcard = () => {
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                placeholder="Your name"
+                placeholder={
+                  lang === "en"
+                    ? en.createRoom.placeholderName
+                    : id.createRoom.placeholderName
+                }
                 className={baseInput}
               />
             </div>
@@ -63,7 +78,8 @@ const CreateRoomcard = () => {
             <label
               htmlFor="roomName"
               className="text-sm text-gray-700 font-medium">
-              Room Name <span className="text-red-500">*</span>
+              {lang === "en" ? en.createRoom.roomName : id.createRoom.roomName}
+              <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <svg
@@ -79,7 +95,11 @@ const CreateRoomcard = () => {
                 type="text"
                 value={roomName}
                 onChange={(e) => setRoomName(e.target.value)}
-                placeholder="Room name"
+                placeholder={
+                  lang === "en"
+                    ? en.createRoom.placeholderRoom
+                    : id.createRoom.placeholderRoom
+                }
                 className={baseInput}
               />
             </div>
@@ -88,11 +108,11 @@ const CreateRoomcard = () => {
           <button
             type="submit"
             className={`w-full rounded-lg px-6 py-3 font-semibold text-white transition transform cursor-pointer bg-primary`}>
-            Create Room
+            {lang === "en" ? en.createRoombutton : id.createRoom.button}
           </button>
 
           <p className="text-center text-gray-500 text-sm">
-            You'll configure theme & language in the lobby
+            {lang === "en" ? en.createRoom.note : id.createRoom.note}
           </p>
         </form>
       </div>
