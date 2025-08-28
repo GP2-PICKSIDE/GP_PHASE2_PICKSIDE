@@ -84,7 +84,7 @@
     "round": "round",
     "noRounds": "No rounds played.",
     "overall": "Overall",
-    "leader": "Leader: {side}",
+    "leader": "Leader:",
     "tie": "Tie",
     "roundsInfo": "Rounds played: ",
     "roundSpace": "of",
