@@ -15,6 +15,7 @@ const Lobby = ({ code, roomName }) => {
         <div>
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900">
             {lang === "en" ? en.lobby.title : id.lobby.title} {""}
+            {""}
             {roomName}
           </h1>
           <div className="mt-2 h-1 w-24 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500" />

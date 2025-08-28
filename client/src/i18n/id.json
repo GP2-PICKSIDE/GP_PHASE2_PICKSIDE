@@ -29,7 +29,7 @@
     "notFound": "Ruangan tidak ditemukan"
   },
   "lobby": {
-    "title": "Ruangan",
+    "title": "Ruangan:  ",
     "copyCode": "Salin kode ruangan",
     "shareNote": "Bagikan kode ini untuk mengundang teman 🚀"
   },
@@ -55,43 +55,45 @@
   },
   "inRound": {
     "wouldYouRather": "Lebih pilih mana...",
-    "roundInfo": "Ronde {round} • Sisa waktu: {time}dtk"
+    "roundInfo": "Ronde • Sisa waktu:"
   },
   "answerCard": {
-    "choose": "Pilih {option}",
-    "tapToChoose": "Ketuk untuk memilih {option}",
+    "choose": "Pilih",
+    "tapToChoose": "Ketuk untuk memilih",
     "loading": "Memuat..."
   },
   "reveal": {
     "results": "Hasil",
-    "nextRound": "Ronde berikutnya dimulai… {time}",
+    "nextRound": "Ronde berikutnya dimulai…",
     "tie": "Seri! 🎯"
   },
   "resultCard": {
     "winner": "Pemenang",
-    "votes": "{count} {count, plural, one {suara} other {suara}}",
+    "votes": "suara",
     "noVoters": "Belum ada yang memilih"
   },
   "progressBar": {
     "optionA": "Opsi A",
     "optionB": "Opsi B",
     "ariaLabel": "{aLabel} {aPct}%, {bLabel} {bPct}%",
-    "votes": "{count} {count, plural, one {suara} other {suara}}"
+    "votes": "suara"
   },
   "summary": {
-    "title": "Game Summary",
-    "roundsPlayed": "Completed {count} {count, plural, one {round} other {rounds}}.",
+    "title": "Hasil Game",
+    "roundsPlayed": "Selesai",
+    "round": "putaran",
     "noRounds": "Belum ada ronde dimainkan.",
-    "overall": "Keseluruhan",
-    "leader": "Pemenang: {side}",
+    "overall": "Keseluruhan Hasil",
+    "leader": "Pemenang:",
     "tie": "Seri",
-    "roundsInfo": "Ronde dimainkan: {played} dari {total}",
+    "roundsInfo": "Ronde dimainkan: ",
+    "roundSpace": "dari",
     "overallResultTie": "Hasil keseluruhan: seri.",
-    "overallLeaderA": "Pemenang keseluruhan: A (+{diff}%)",
-    "overallLeaderB": "Pemenang keseluruhan: B (+{diff}%)",
+    "overallLeaderA": "Hasil: A",
+    "overallLeaderB": "Hasil: B",
     "topVoted": "Pertanyaan dengan suara terbanyak",
     "noData": "Belum ada data",
-    "playersParticipated": "Jumlah pemain: {count}",
+    "playersParticipated": "Jumlah pemain:",
     "playAgain": "Main lagi",
     "backHome": "Kembali ke Beranda",
     "noRoundsToShow": "Belum ada ronde untuk ditampilkan."

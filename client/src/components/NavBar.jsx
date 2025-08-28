@@ -13,9 +13,8 @@ const NavBar = () => {
   return (
     <nav className="flex justify-between px-8 md:px-16 py-6 items-center bg-white/50 backdrop-blur-lg border-b border-black/5">
       <Link
-        to="/play"
-        className="font-extrabold text-2xl bg-gradient-to-r from-indigo-500 to-pink-500 text-transparent bg-clip-text"
-      >
+        to="/"
+        className="font-extrabold text-2xl bg-gradient-to-r from-indigo-500 to-pink-500 text-transparent bg-clip-text">
         PICK<span className="text-gray-800">SIDE</span>
       </Link>
 
@@ -23,20 +22,17 @@ const NavBar = () => {
         {/* Simple white toggle */}
         <button
           onClick={toggleLang}
-          className="flex items-center justify-between w-16 px-1 py-1 rounded-full bg-white shadow ring-1 ring-black/5 text-sm font-semibold"
-        >
+          className="flex items-center justify-between w-16 px-1 py-1 rounded-full bg-white shadow ring-1 ring-black/5 text-sm font-semibold">
           <span
             className={`w-1/2 text-center transition cursor-pointer ${
               lang === "en" ? "text-indigo-600" : "text-gray-500"
-            }`}
-          >
+            }`}>
             EN
           </span>
           <span
             className={`w-1/2 text-center transition cursor-pointer ${
               lang === "id" ? "text-indigo-600" : "text-gray-500"
-            }`}
-          >
+            }`}>
             ID
           </span>
         </button>

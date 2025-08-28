@@ -1,6 +1,11 @@
 import useGameStore from "../../../stores/gameStore";
 import { initials } from "../../../utils/initialsName";
 
+import en from "../../../i18n/en.json";
+import id from "../../../i18n/id.json";
+import { LanguageContext } from "../../../contexts/context";
+import { useContext } from "react";
+
 const colorRing = [
   "from-indigo-500 to-purple-500",
   "from-pink-500 to-rose-500",
@@ -12,12 +17,13 @@ const colorRing = [
 const PlayersCard = () => {
   const { players = [] } = useGameStore();
   const onlinePlayers = players.filter((p) => p?.connected);
+  const { lang } = useContext(LanguageContext);
 
   return (
     <section className="w-full rounded-2xl bg-white/60 backdrop-blur-xl border border-black/5 shadow-lg px-8 md:px-12 py-10 transition hover:shadow-2xl">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl md:text-2xl font-bold tracking-tight text-gray-900">
-          Players in Room
+          {lang === "en" ? en.players.title : id.players.title}
         </h2>
         <span className="inline-flex items-center justify-center min-w-[2rem] h-7 px-2 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 ring-1 ring-inset ring-black/5">
           {onlinePlayers.length}
@@ -26,7 +32,9 @@ const PlayersCard = () => {
 
       {onlinePlayers.length === 0 ? (
         <p className="text-gray-500 text-sm">
-          No players yet — share the room code to invite friends.
+          {lang === "en"
+            ? en.hostSettings.noPlayers
+            : id.hostSettings.noPlayers}
         </p>
       ) : (
         <ul className="flex flex-col divide-y divide-gray-100">
@@ -35,13 +43,14 @@ const PlayersCard = () => {
             const ring = colorRing[idx % colorRing.length];
 
             return (
-              <li key={player.id} className="py-4 flex items-center justify-between gap-4">
+              <li
+                key={player.id}
+                className="py-4 flex items-center justify-between gap-4">
                 {/* Left: Avatar + Name */}
                 <div className="min-w-0 flex items-center gap-4">
                   <div
                     className={`relative h-12 w-12 shrink-0 rounded-full ring-2 ring-offset-2 ring-offset-white bg-gradient-to-br ${ring} text-white grid place-items-center`}
-                    title={name}
-                  >
+                    title={name}>
                     <span className="font-semibold select-none">
                       {initials(name)}
                     </span>
@@ -50,7 +59,9 @@ const PlayersCard = () => {
                   <div className="min-w-0">
                     <p className="font-medium leading-tight truncate">{name}</p>
                     <p className="mt-1 text-xs md:hidden text-emerald-600">
-                      Connected
+                      {lang === "en"
+                        ? en.hostSettings.connected
+                        : id.hostSettings.connected}
                     </p>
                   </div>
                 </div>

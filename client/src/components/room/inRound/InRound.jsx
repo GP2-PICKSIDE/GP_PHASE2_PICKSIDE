@@ -3,11 +3,17 @@ import AnswerCard from "./AnswerCard";
 import useGameStore from "../../../stores/gameStore";
 import { useEffect, useRef, useState } from "react";
 
+import en from "../../../i18n/en.json";
+import id from "../../../i18n/id.json";
+import { LanguageContext } from "../../../contexts/context";
+import { useContext } from "react";
+
 const InRound = () => {
   const { players = [], question, roundIndex, deadline, me } = useGameStore();
   const list = players.filter((p) => p?.connected);
   const title = question?.question || "Loading...";
   const options = question?.options || [];
+  const { lang } = useContext(LanguageContext);
 
   // timer
   const [left, setLeft] = useState(0);
@@ -50,13 +56,22 @@ const InRound = () => {
       {/* Title + round info */}
       <div className="flex flex-col items-center gap-2">
         <h1 className="text-xl md:text-3xl font-semibold text-center">
-          Would you rather...
+          {lang === "en"
+            ? en.inRound.wouldYouRather
+            : id.inRound.wouldYouRather}
           <p className="mt-6 text-3xl md:text-4xl font-extrabold tracking-tight">
             {title}
           </p>
         </h1>
         <div className="text-gray-500">
-          Round {roundIndex + 1} • Time left: <b>{secs}s</b>
+          {lang === "en"
+            ? en.inRound.roundInfo.split("•")[0]
+            : id.inRound.roundInfo.split("•")[0]}{" "}
+          {roundIndex + 1} •
+          {lang === "en"
+            ? en.inRound.roundInfo.split("•")[1]
+            : id.inRound.roundInfo.split("•")[1]}{" "}
+          <b>{secs} detik</b>
         </div>
 
         {/* progress bar */}
@@ -99,8 +114,7 @@ const InRound = () => {
                 rings[idx % rings.length],
                 voted ? "ring-4 ring-emerald-400" : "ring-2 ring-white/50",
               ].join(" ")}
-              title={player.name || ""}
-            >
+              title={player.name || ""}>
               <span className="font-semibold text-sm md:text-base select-none">
                 {initials(player.name || "")}
               </span>
@@ -112,8 +126,7 @@ const InRound = () => {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    strokeWidth={3}
-                  >
+                    strokeWidth={3}>
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"

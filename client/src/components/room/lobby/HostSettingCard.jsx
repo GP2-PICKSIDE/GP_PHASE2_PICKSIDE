@@ -110,7 +110,11 @@ const HostSettingCard = () => {
               }
               inputMode="numeric"
             />
-            <p className="mt-1 text-xs text-gray-500">Min 1 - Max 10</p>
+            <p className="mt-1 text-xs text-gray-500">
+              {lang === "en"
+                ? en.hostSettings.roundsNote
+                : id.hostSettings.roundsNote}
+            </p>
           </div>
         </div>
 
@@ -125,7 +129,13 @@ const HostSettingCard = () => {
                   ? "bg-indigo-300 cursor-not-allowed"
                   : "bg-gradient-to-r from-indigo-600 to-pink-600 hover:scale-[1.02] hover:shadow-lg"
               }`}>
-            {isStarting ? "Starting…" : "Start Game"}
+            {isStarting
+              ? lang === "en"
+                ? en.hostSettings.buttonStarting
+                : id.hostSettings.buttonStarting
+              : lang === "en"
+              ? en.hostSettings.buttonStart
+              : id.hostSettings.buttonStart}
           </button>
           <p className="text-center text-gray-500 text-xs mt-2">
             {lang === "en"
