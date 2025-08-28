@@ -1,0 +1,101 @@
+{
+  "main": {
+    "subtitle": "Ready to pick your side?",
+    "description": "Click the button below to start the game",
+    "startButton": "Start"
+  },
+  "home": {
+    "title": "Create or Join a Room",
+    "subtitle": "Challenge your friends with tough choices!"
+  },
+  "createRoom": {
+    "title": "🚀 Create Room",
+    "displayName": "Display Name",
+    "roomName": "Room Name",
+    "placeholderName": "Your name",
+    "placeholderRoom": "Room name",
+    "button": "Create Room",
+    "note": "You'll configure theme & language in the lobby"
+  },
+  "joinRoom": {
+    "title": "🎮 Join Room",
+    "displayName": "Display Name",
+    "roomCode": "Room Code",
+    "placeholderName": "Your name",
+    "placeholderCode": "e.g., ABCDE",
+    "button": "Join Room"
+  },
+  "room": {
+    "notFound": "Room not found"
+  },
+  "lobby": {
+    "title": "Room",
+    "copyCode": "Copy room code",
+    "shareNote": "Share this code to invite friends 🚀"
+  },
+  "hostSettings": {
+    "title": "Room Settings",
+    "theme": "Theme",
+    "language": "Language",
+    "rounds": "Rounds",
+    "roundsNote": "Min 1 - Max 10",
+    "buttonStart": "Start Game",
+    "buttonStarting": "Starting…",
+    "lockedNote": "Settings are locked after the game starts."
+  },
+  "players": {
+    "title": "Players in Room",
+    "noPlayers": "No players yet — share the room code to invite friends.",
+    "connected": "Connected",
+    "unnamed": "Unnamed Player"
+  },
+  "navbar": {
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "inRound": {
+    "wouldYouRather": "Would you rather...",
+    "roundInfo": "Round • Time left:"
+  },
+  "answerCard": {
+    "choose": "Choose",
+    "tapToChoose": "Tap to choose",
+    "loading": "Loading..."
+  },
+  "reveal": {
+    "results": "Results",
+    "nextRound": "Next round starting…",
+    "tie": "It's a tie! 🎯"
+  },
+  "resultCard": {
+    "winner": "Winner",
+    "votes": "vote",
+    "noVoters": "No voters"
+  },
+  "progressBar": {
+    "optionA": "Option A",
+    "optionB": "Option B",
+    "ariaLabel": "{aLabel} {aPct}%, {bLabel} {bPct}%",
+    "votes": "votes"
+  },
+  "summary": {
+    "title": "Game Summary",
+    "roundsPlayed": "Completed",
+    "round": "round",
+    "noRounds": "No rounds played.",
+    "overall": "Overall",
+    "leader": "Leader:",
+    "tie": "Tie",
+    "roundsInfo": "Rounds played: ",
+    "roundSpace": "of",
+    "overallResultTie": "Overall result: tie.",
+    "overallLeaderA": "Overall leader: A",
+    "overallLeaderB": "Overall leader: B",
+    "topVoted": "Top voted questions",
+    "noData": "No data yet",
+    "playersParticipated": "Players participated:",
+    "playAgain": "Play again",
+    "backHome": "Back to Home",
+    "noRoundsToShow": "No rounds to show yet."
+  }
+}

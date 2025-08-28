@@ -1,0 +1,101 @@
+{
+  "main": {
+    "subtitle": "Siap memilih sisi kamu?",
+    "description": "Klik tombol di bawah untuk memulai permainan",
+    "startButton": "Mulai"
+  },
+  "home": {
+    "title": "Buat atau Gabung ke Ruangan",
+    "subtitle": "Tantang teman-temanmu dengan pilihan sulit!"
+  },
+  "createRoom": {
+    "title": "🚀 Buat Ruangan",
+    "displayName": "Nama Tampilan",
+    "roomName": "Nama Ruangan",
+    "placeholderName": "Namamu",
+    "placeholderRoom": "Nama ruangan",
+    "button": "Buat Ruangan",
+    "note": "Kamu akan mengatur tema & bahasa di lobi"
+  },
+  "joinRoom": {
+    "title": "🎮 Gabung Ruangan",
+    "displayName": "Nama Tampilan",
+    "roomCode": "Kode Ruangan",
+    "placeholderName": "Namamu",
+    "placeholderCode": "contoh: ABCDE",
+    "button": "Gabung Ruangan"
+  },
+  "room": {
+    "notFound": "Ruangan tidak ditemukan"
+  },
+  "lobby": {
+    "title": "Ruangan",
+    "copyCode": "Salin kode ruangan",
+    "shareNote": "Bagikan kode ini untuk mengundang teman 🚀"
+  },
+  "hostSettings": {
+    "title": "Pengaturan Ruangan",
+    "theme": "Tema",
+    "language": "Bahasa",
+    "rounds": "Ronde",
+    "roundsNote": "Min 1 - Maks 10",
+    "buttonStart": "Mulai Permainan",
+    "buttonStarting": "Memulai…",
+    "lockedNote": "Pengaturan terkunci setelah permainan dimulai."
+  },
+  "players": {
+    "title": "Pemain di Ruangan",
+    "noPlayers": "Belum ada pemain — bagikan kode ruangan untuk mengundang teman.",
+    "connected": "Terhubung",
+    "unnamed": "Pemain Tanpa Nama"
+  },
+  "navbar": {
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "inRound": {
+    "wouldYouRather": "Lebih pilih mana...",
+    "roundInfo": "Ronde • Sisa waktu:"
+  },
+  "answerCard": {
+    "choose": "Pilih",
+    "tapToChoose": "Ketuk untuk memilih",
+    "loading": "Memuat..."
+  },
+  "reveal": {
+    "results": "Hasil",
+    "nextRound": "Ronde berikutnya dimulai…",
+    "tie": "Seri! 🎯"
+  },
+  "resultCard": {
+    "winner": "Pemenang",
+    "votes": "suara",
+    "noVoters": "Belum ada yang memilih"
+  },
+  "progressBar": {
+    "optionA": "Opsi A",
+    "optionB": "Opsi B",
+    "ariaLabel": "{aLabel} {aPct}%, {bLabel} {bPct}%",
+    "votes": "suara"
+  },
+  "summary": {
+    "title": "Hasil Game",
+    "roundsPlayed": "Selesai",
+    "round": "putaran",
+    "noRounds": "Belum ada ronde dimainkan.",
+    "overall": "Keseluruhan Hasil",
+    "leader": "Pemenang:",
+    "tie": "Seri",
+    "roundsInfo": "Ronde dimainkan: ",
+    "roundSpace": "dari",
+    "overallResultTie": "Hasil keseluruhan: seri.",
+    "overallLeaderA": "Hasil: A",
+    "overallLeaderB": "Hasil: B",
+    "topVoted": "Pertanyaan dengan suara terbanyak",
+    "noData": "Belum ada data",
+    "playersParticipated": "Jumlah pemain:",
+    "playAgain": "Main lagi",
+    "backHome": "Kembali ke Beranda",
+    "noRoundsToShow": "Belum ada ronde untuk ditampilkan."
+  }
+}
