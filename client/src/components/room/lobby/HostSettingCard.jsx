@@ -1,19 +1,17 @@
+import { useEffect, useState } from "react";
 import useAllStore from "../../../stores";
 import useGameStore from "../../../stores/gameStore";
-import { useMutation } from "@tanstack/react-query";
+import useSocketStore from "../../../stores/socketStore";
 
 const HostSettingCard = () => {
   const { isHost, settings, FnStartRoom } = useGameStore();
   const { setRoomTheme, setRoomLang, setTotalRounds } = useAllStore();
+  const { socketState } = useSocketStore();
 
   const themes = ["funny", "life", "food", "friends", "travel"];
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["startRoom"],
-    mutationFn: FnStartRoom,
-  });
-
-  const disabled = !isHost || isPending;
+  const [isStarting, setIsStarting] = useState(false);
+  const disabled = !isHost || isStarting;
 
   const baseInput =
     "w-full rounded-xl p-3 border bg-white/70 backdrop-blur-md text-gray-900 " +
@@ -22,19 +20,29 @@ const HostSettingCard = () => {
 
   const labelCls = "text-sm text-gray-700";
 
+  const handleStart = (e) => {
+    e.preventDefault();
+
+    if (isStarting) return;
+    setIsStarting(true);
+
+    FnStartRoom();
+  };
+
+  useEffect(() => {
+    if (!socketState) return;
+    const onRoomState = () => setIsStarting(false);
+    socketState.on("room:state", onRoomState);
+    return () => socketState.off("room:state", onRoomState);
+  }, [socketState]);
+
   return (
     <section className="w-full rounded-2xl bg-white/60 backdrop-blur-xl border border-black/5 shadow-lg px-8 md:px-12 py-10 transition hover:shadow-2xl">
       <h2 className="text-xl font-bold tracking-tight text-gray-900">
         Room Settings
       </h2>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (!disabled) mutate();
-        }}
-        className="mt-6 flex flex-col gap-5"
-      >
+      <form onSubmit={handleStart} className="mt-6 flex flex-col gap-5">
         {/* Theme */}
         <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-3">
           <label htmlFor="theme" className={labelCls}>
@@ -94,7 +102,7 @@ const HostSettingCard = () => {
               placeholder="Rounds"
               inputMode="numeric"
             />
-            <p className="mt-1 text-xs text-gray-500">Min 1 • Max 10</p>
+            <p className="mt-1 text-xs text-gray-500">Min 1 - Max 10</p>
           </div>
         </div>
 
@@ -110,7 +118,7 @@ const HostSettingCard = () => {
                   : "bg-gradient-to-r from-indigo-600 to-pink-600 hover:scale-[1.02] hover:shadow-lg"
               }`}
           >
-            {isPending ? "Starting…" : "Start Game"}
+            {isStarting ? "Starting…" : "Start Game"}
           </button>
           <p className="text-center text-gray-500 text-xs mt-2">
             Settings are locked after the game starts.
