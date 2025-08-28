@@ -143,8 +143,9 @@ const Summary = () => {
                         }%)`
                     : lang === "en"
                     ? `${en.summary.overallLeaderA} (+${overallB - overallA}%)`
-                    : `${id.summary.overallLeaderA}`}{" "}
-                  {`(+${overallB - overallA}%)`}
+                    : `${id.summary.overallLeaderA} (+${
+                        overallB - overallA
+                      }%)`}{" "}
                 </p>
               )}
             </div>
@@ -175,14 +176,12 @@ const Summary = () => {
           {/* CTAs */}
           <button
             onClick={handlePlayAgain}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 p-3 rounded-xl text-white font-semibold cursor-pointer transition"
-          >
+            className="w-full bg-indigo-600 hover:bg-indigo-700 p-3 rounded-xl text-white font-semibold cursor-pointer transition">
             {lang === "en" ? en.summary.playAgain : id.summary.playAgain}
           </button>
           <Link
             to="/play"
-            className="w-full border border-gray-300 p-3 rounded-xl cursor-pointer hover:bg-gray-100 text-center"
-          >
+            className="w-full border border-gray-300 p-3 rounded-xl cursor-pointer hover:bg-gray-100 text-center">
             {lang === "en" ? en.summary.backHome : id.summary.backHome}
           </Link>
         </div>
@@ -208,8 +207,7 @@ const Summary = () => {
               return (
                 <article
                   key={i}
-                  className="rounded-xl p-6 shadow-sm border border-black/5 bg-white"
-                >
+                  className="rounded-xl p-6 shadow-sm border border-black/5 bg-white">
                   <h3 className="font-semibold text-gray-900">
                     {i + 1}. {round?.question?.question}
                   </h3>
