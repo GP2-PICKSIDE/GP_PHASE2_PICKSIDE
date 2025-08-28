@@ -7,6 +7,7 @@ import en from "../../../i18n/en.json";
 import id from "../../../i18n/id.json";
 import { LanguageContext } from "../../../contexts/context";
 import { useContext } from "react";
+import { toast } from "react-toastify";
 
 const HostSettingCard = () => {
   const { isHost, settings, FnStartRoom } = useGameStore();
@@ -51,13 +52,19 @@ const HostSettingCard = () => {
 
   const labelCls = "text-sm text-gray-700";
 
-  const handleStart = (e) => {
-    e.preventDefault();
+  const handleStart = async (e) => {
+    try {
+      e.preventDefault();
 
-    if (isStarting) return;
-    setIsStarting(true);
+      if (isStarting) return;
+      setIsStarting(true);
 
-    FnStartRoom();
+      await FnStartRoom();
+    } catch (err) {
+      console.error(err);
+
+      toast.error(err);
+    }
   };
 
   useEffect(() => {
