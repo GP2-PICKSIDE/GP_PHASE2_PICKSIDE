@@ -9,7 +9,7 @@ import RoomPage from "./views/RoomPage";
 import MainPage from "./views/MainLandingPage";
 
 createRoot(document.getElementById("root")).render(
-  // <StrictMode>
+
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<MainPage />} />
@@ -20,5 +20,4 @@ createRoot(document.getElementById("root")).render(
       </Route>
     </Routes>
   </BrowserRouter>
-  // </StrictMode>
 );
